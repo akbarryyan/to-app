@@ -27,6 +27,13 @@ class AdminAuthController extends Controller
     {
         // Hapus informasi admin dari session
         $request->session()->forget('admin_id');
-        return response()->json(['message' => 'Logout successful'], 200);
+
+        // Mengirimkan HTML halaman login sebagai respons
+        $html = view('admin.login')->render();
+
+        return response()->json([
+            'message' => 'Logout successful',
+            'html' => $html
+        ], 200);
     }
 }

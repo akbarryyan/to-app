@@ -123,9 +123,17 @@
                     data: $('#logoutForm').serialize(),
                     success: function(response) {
                         if (response.message === 'Logout successful') {
+                            // Penundaan 1 detik untuk memastikan animasi loading terlihat
                             setTimeout(function() {
-                                window.location.href = '{{ url("/admin/login") }}';
-                            }, 2500); // Penundaan 2.5 detik
+                                // Mengarahkan pengguna ke halaman login tanpa refresh penuh
+                                $('body').html(response.html);
+
+                                // Memperbarui URL tanpa reload halaman penuh
+                                history.pushState(null, null, '{{ url("/admin/login") }}');
+
+                                // Menyembunyikan animasi loading setelah konten dimuat
+                                $('#loading').removeClass('active');
+                            }, 3000);
                         } else {
                             $('#loading').removeClass('active');
                             alert('Logout failed');
