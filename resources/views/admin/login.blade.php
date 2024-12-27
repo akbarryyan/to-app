@@ -1,4 +1,3 @@
-<!-- resources/views/admin/login.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Title -->
-    <title>Pintu Universitas Admin Login</title>
+    <title>Edmate Learning Dashboard HTML Template</title>
     <!-- Favicon -->
     <link rel="shortcut icon" href="{{ asset('assets/images/logo/favicon.png') }}">
     <!-- Bootstrap -->
@@ -31,6 +30,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-jvectormap-2.0.5.css') }}">
     <!-- Main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head> 
 <body>
     
@@ -46,12 +47,12 @@
 
     <section class="auth d-flex">
         <div class="auth-left bg-main-50 flex-center p-24">
-            <img src="https://html.themeholy.com/edmate/assets/images/thumbs/auth-img1.png" alt="">
+            <img src="assets/images/thumbs/auth-img1.png" alt="">
         </div>
         <div class="auth-right py-40 px-24 flex-center flex-column">
             <div class="auth-right__inner mx-auto w-100">
                 <a href="index.html" class="auth-right__logo">
-                    <img src="https://html.themeholy.com/edmate/assets/images/logo/logo.png" alt="">
+                    <img src="assets/images/logo/logo.png" alt="">
                 </a>
                 <h2 class="mb-8">Welcome to Back! &#128075;</h2>
                 <p class="text-gray-600 text-15 mb-32">Please sign in to your account and start the adventure</p>
@@ -143,13 +144,12 @@
     <script>
         $('#loginForm').on('submit', function(event) {
             event.preventDefault();
-    
+
             $.ajax({
                 url: '{{ url("/admin/login") }}',
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function(response) {
-                    // Redirect to admin dashboard
                     if (response.message === 'Login successful') {
                         window.location.href = '{{ url("/admin/dashboard") }}';
                     } else {
@@ -162,6 +162,5 @@
             });
         });
     </script>
-    
 </body>
 </html>
