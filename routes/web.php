@@ -14,15 +14,8 @@ Route::prefix('admin')->group(function () {
     })->name('admin.login');
 
     Route::post('/login', [AdminAuthController::class, 'login']);
-    Route::post('/logout', [AdminAuthController::class, 'logout']);
-
-    Route::get('/dashboard', function() {
-        if (!session()->has('admin_id')) {
-            echo "<script>alert('You must be logged in as an admin to access this page.');</script>";
-            return redirect()->route('admin.login');
-        }
-        return app(AdminDashboardController::class)->index();
-    })->name('admin.dashboard');
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('admin.logout');;
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 });
 
 
