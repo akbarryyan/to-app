@@ -8,14 +8,14 @@
                             <div class="row align-items-center h-100">
                                 <div class="col-lg-6">
                                     <div class="grettings-box-two__content">
-                                        <h2 class="fw-medium mb-0 flex-align gap-10">Hi, Mohib <img src="assets/images/icons/wave-hand.png" alt=""> </h2>
+                                        <h2 class="fw-medium mb-0 flex-align gap-10">Hi, Admin <img src="assets/images/icons/wave-hand.png" alt=""> </h2>
                                         <h2 class="fw-medium mb-16">What do you want to learn today with your partner?</h2>
                                         <p class="text-15 text-gray-400">Discover courses, track progress, and achieve your learning goods seamlessly.</p>
                                         <a href="student-courses.html" class="btn btn-main rounded-pill mt-32">Explore Courses</a>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 d-md-block d-none mt-auto">
-                                    <img src="assets/images/thumbs/gretting-thumb.png" alt="">
+                                    <img src="https://html.themeholy.com/edmate/assets/images/thumbs/gretting-thumb.png" alt="">
                                 </div>
                             </div>
                             <img src="assets/images/bg/star-shape.png" class="position-absolute start-0 top-0 w-100 h-100 z-n1 object-fit-contain" alt="">
