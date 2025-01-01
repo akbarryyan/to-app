@@ -4,7 +4,7 @@
     <!-- sidebar close btn -->
     
     <a href="index.html" class="sidebar__logo text-center p-20 position-sticky inset-block-start-0 bg-white w-100 z-1 pb-10">
-        <img src="assets/images/logo/logo.png" alt="Logo">
+        <img src="https://html.themeholy.com/edmate/assets/images/logo/logo.png" alt="Logo">
     </a>
 
     <div class="sidebar-menu-wrapper overflow-y-auto scroll-sm">
@@ -144,18 +144,6 @@
                 </li>
                 
             </ul>
-        </div>
-        <div class="p-20 pt-80">
-            <div class="bg-main-50 p-20 pt-0 rounded-16 text-center mt-74">
-                <span class="border border-5 bg-white mx-auto border-primary-50 w-114 h-114 rounded-circle flex-center text-success-600 text-2xl translate-n74">
-                    <img src="assets/images/icons/certificate.png" alt="" class="centerised-img">
-                </span>
-                <div class="mt-n74">
-                    <h5 class="mb-4 mt-22">Get Pro Certificate</h5>
-                    <p class="">Explore 400+ courses with lifetime members</p>
-                    <a href="pricing-plan.html" class="btn btn-main mt-16 rounded-pill">Get Access</a>
-                </div>
-            </div>
         </div>
     </div>
 
