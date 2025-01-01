@@ -50,7 +50,7 @@
                     <!-- Submenu End -->
                 </li>
                 <li class="sidebar-menu__item">
-                    <a href="students.html" class="sidebar-menu__link">
+                    <a href="{{ route('welcome') }}" class="sidebar-menu__link">
                         <span class="icon"><i class="ph ph-users-three"></i></span>
                         <span class="text">Students</span>
                     </a>
@@ -113,36 +113,6 @@
                         <span class="text">Account Settings</span>
                     </a>
                 </li>
-
-                <li class="sidebar-menu__item has-dropdown">
-                    <a href="javascript:void(0)" class="sidebar-menu__link">
-                        <span class="icon"><i class="ph ph-shield-check"></i></span>
-                        <span class="text">Authetication</span>
-                    </a>
-                    <!-- Submenu start -->
-                    <ul class="sidebar-submenu">
-                        <li class="sidebar-submenu__item">
-                            <a href="sign-in.html" class="sidebar-submenu__link">Sign In</a>
-                        </li>
-                        <li class="sidebar-submenu__item">
-                            <a href="sign-up.html" class="sidebar-submenu__link">Sign Up</a>
-                        </li>
-                        <li class="sidebar-submenu__item">
-                            <a href="forgot-password.html" class="sidebar-submenu__link">Forgot Password</a>
-                        </li>
-                        <li class="sidebar-submenu__item">
-                            <a href="reset-password.html" class="sidebar-submenu__link">Reset Password</a>
-                        </li>
-                        <li class="sidebar-submenu__item">
-                            <a href="verify-email.html" class="sidebar-submenu__link">Verify Email</a>
-                        </li>
-                        <li class="sidebar-submenu__item">
-                            <a href="two-step-verification.html" class="sidebar-submenu__link">Two Step Verification</a>
-                        </li>
-                    </ul>
-                    <!-- Submenu End -->
-                </li>
-                
             </ul>
         </div>
     </div>

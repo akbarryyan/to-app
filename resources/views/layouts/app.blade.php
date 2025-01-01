@@ -85,11 +85,14 @@
                 background-color: #F2B900;
             }
         }
+        .fade-out { animation: fadeOut 0.5s forwards; } .fade-in { animation: fadeIn 0.5s forwards; } @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } } @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head> 
 <body>
     @include('layouts.header')
-    @include('layouts.sidebar')
+    <div id="content-area">
+        @include('layouts.sidebar')
+    </div>
     @include('layouts.topbar')
     @yield('content')
     @include('layouts.footer')
@@ -142,6 +145,49 @@
                     error: function(xhr, status, error) {
                         $('#loading').removeClass('active');
                         alert('Logout failed');
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('.sidebar-menu__link').on('click', function(event) {
+                event.preventDefault();
+
+                let url = $(this).attr('href');
+
+                $('#loading').addClass('active');
+
+                $('#content-area').addClass('fade-out');
+
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function(response) {
+                        // Penundaan 1 detik untuk memastikan animasi loading terlihat
+                        setTimeout(function() {
+                            // Memperbarui konten halaman
+                            $('#content-area').html(response);
+
+                            // Memperbarui URL tanpa reload halaman penuh
+                            history.pushState(null, null, url);
+
+                            // Menyembunyikan animasi loading dan memperbarui konten halaman
+                            $('#loading').removeClass('active');
+                            $('#content-area').removeClass('fade-out').addClass('fade-in');
+                        }, 3000);
+                    },
+                    error: function(xhr, status, error) {
+                        $('#loading').removeClass('active');
+                        alert('Failed to load content');
                     }
                 });
             });
