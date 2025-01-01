@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Edmate Learning Dashboard HTML Template</title>
@@ -85,16 +84,29 @@
                 background-color: #F2B900;
             }
         }
-        .fade-out { animation: fadeOut 0.5s forwards; } .fade-in { animation: fadeIn 0.5s forwards; } @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } } @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .fade-out {
+            animation: fadeOut 0.5s forwards;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s forwards;
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
     </style>
 </head> 
 <body>
     @include('layouts.header')
-    <div id="content-area">
-        @include('layouts.sidebar')
-    </div>
+    @include('layouts.sidebar')
     @include('layouts.topbar')
-    @yield('content')
+    <div id="content-area">
+        @yield('content')
+    </div>
     @include('layouts.footer')
 
     <div id="loading" class="loading-area">
@@ -126,15 +138,9 @@
                     data: $('#logoutForm').serialize(),
                     success: function(response) {
                         if (response.message === 'Logout successful') {
-                            // Penundaan 1 detik untuk memastikan animasi loading terlihat
                             setTimeout(function() {
-                                // Mengarahkan pengguna ke halaman login tanpa refresh penuh
                                 $('body').html(response.html);
-
-                                // Memperbarui URL tanpa reload halaman penuh
                                 history.pushState(null, null, '{{ url("/admin/login") }}');
-
-                                // Menyembunyikan animasi loading setelah konten dimuat
                                 $('#loading').removeClass('active');
                             }, 3000);
                         } else {
@@ -148,16 +154,6 @@
                     }
                 });
             });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
             $('.sidebar-menu__link').on('click', function(event) {
                 event.preventDefault();
@@ -165,25 +161,18 @@
                 let url = $(this).attr('href');
 
                 $('#loading').addClass('active');
-
                 $('#content-area').addClass('fade-out');
 
                 $.ajax({
                     url: url,
                     method: 'GET',
                     success: function(response) {
-                        // Penundaan 1 detik untuk memastikan animasi loading terlihat
                         setTimeout(function() {
-                            // Memperbarui konten halaman
-                            $('#content-area').html(response);
-
-                            // Memperbarui URL tanpa reload halaman penuh
+                            $('#content-area').empty().html(response.html); // pastikan menggunakan .html dari JSON
                             history.pushState(null, null, url);
-
-                            // Menyembunyikan animasi loading dan memperbarui konten halaman
                             $('#loading').removeClass('active');
                             $('#content-area').removeClass('fade-out').addClass('fade-in');
-                        }, 3000);
+                        }, 1000);
                     },
                     error: function(xhr, status, error) {
                         $('#loading').removeClass('active');
