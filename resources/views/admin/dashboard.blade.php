@@ -18,7 +18,7 @@
                                     <img src="https://html.themeholy.com/edmate/assets/images/thumbs/gretting-thumb.png" alt="">
                                 </div>
                             </div>
-                            <img src="assets/images/bg/star-shape.png" class="position-absolute start-0 top-0 w-100 h-100 z-n1 object-fit-contain" alt="">
+                            <img src="https://html.themeholy.com/edmate/assets/images/bg/star-shape.png" class="position-absolute start-0 top-0 w-100 h-100 z-n1 object-fit-contain" alt="">
                         </div>
                     </div>
                 </div>
