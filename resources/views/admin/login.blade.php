@@ -48,7 +48,7 @@
 
     <section class="auth d-flex">
         <div class="auth-left bg-main-50 flex-center p-24">
-            <img src="assets/images/thumbs/auth-img1.png" alt="">
+            <img src="https://html.themeholy.com/edmate/assets/images/thumbs/auth-img1.png" alt="">
         </div>
         <div class="auth-right py-40 px-24 flex-center flex-column">
             <div class="auth-right__inner mx-auto w-100">
