@@ -2,19 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ManageUsersController extends Controller
 {
     public function loadManageUsers(Request $request)
     {
+        $users = User::all();
+
         if ($request->ajax()) {
-            // Hanya mengirimkan konten HTML jika permintaan melalui AJAX
-            $html = view('admin.partials.manage-users')->render();
+            $html = view('admin.partials.manage-users', compact('users'))->render();
             return response()->json(['html' => $html], 200);
         }
 
-        // Mengirimkan seluruh layout dengan konten jika bukan permintaan AJAX
-        return view('admin.manage-users');
+        return view('admin.manage-users', compact('users'));
+    }
+
+    public function deleteUser($id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->delete();
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false], 404);
     }
 }
