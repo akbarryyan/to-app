@@ -184,7 +184,7 @@
 
                             // Tambahkan kelas aktif ke menu yang diklik
                             $('a[href="' + url + '"]').closest('.sidebar-menu__item').addClass('active');
-                        }, 1000);
+                        }, 500);
                     },
                     error: function(xhr, status, error) {
                         $('#loading').removeClass('active');
@@ -231,113 +231,194 @@
         </div>
     </div>
 
+    <!-- Modal Edit Pengguna -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm">
+                        <div class="mb-3">
+                            <label for="editUserName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="editUserName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editUserEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="editUserEmail" required>
+                        </div>
+                        <input type="hidden" id="editUserId">
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveChangesButton">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         let userIdToDelete;
-    
-        function confirmDelete(userId) {
-            userIdToDelete = userId;
-            $('#deleteModal').modal('show');
-        }
-    
-        document.getElementById('deleteButton').addEventListener('click', function(event) {
-            event.preventDefault();
-    
-            $('#loading').addClass('active');
-            // Lakukan panggilan AJAX untuk menghapus pengguna berdasarkan userIdToDelete
-            $.ajax({
-                url: `/admin/users/${userIdToDelete}`,
-                type: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(result) {
-                    // Sembunyikan modal
-                    $('#deleteModal').modal('hide');
-                    $(`#user-row-${userIdToDelete}`).fadeOut('slow', function() {
-                        $(this).remove();
-                        // Perbarui data tabel
-                        updateTable();
-                    });
-                    setTimeout(function() {
-                        $('#loading').removeClass('active');
-                    }, 1000); // Delay 1 detik
-                },
-                error: function(xhr, status, error) {
-                    // Tangani kesalahan
-                    $('#loading').removeClass('active');
-                    alert('Failed to delete user');
-                }
+let userIdToEdit;
+
+// Fungsi untuk menampilkan modal konfirmasi hapus
+function confirmDelete(userId) {
+    userIdToDelete = userId;
+    $('#deleteModal').modal('show');
+}
+
+// Fungsi untuk menampilkan modal edit
+function editUser(userId, userName, userEmail) {
+    userIdToEdit = userId;
+    $('#editUserId').val(userId);
+    $('#editUserName').val(userName);
+    $('#editUserEmail').val(userEmail);
+    $('#editModal').modal('show');
+}
+
+document.getElementById('deleteButton').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    $('#loading').addClass('active');
+    // Lakukan panggilan AJAX untuk menghapus pengguna berdasarkan userIdToDelete
+    $.ajax({
+        url: `/admin/users/${userIdToDelete}`,
+        type: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(result) {
+            // Sembunyikan modal
+            $('#deleteModal').modal('hide');
+            $(`#user-row-${userIdToDelete}`).fadeOut('slow', function() {
+                $(this).remove();
+                // Perbarui data tabel
             });
-        });
-    
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            var input, filter, table, tr, td, i, j, txtValue;
-            input = document.getElementById('searchInput');
-            filter = input.value.toUpperCase();
-            table = document.getElementById('userTable');
-            tr = table.getElementsByTagName('tr');
-    
-            for (i = 1; i < tr.length; i++) {
-                tr[i].style.display = 'none';
-                td = tr[i].getElementsByTagName('td');
-                for (j = 0; j < td.length; j++) {
-                    if (td[j]) {
-                        txtValue = td[j].textContent || td[j].innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = '';
-                            break;
-                        }
-                    }
+            setTimeout(function() {
+                $('#loading').removeClass('active');
+            }, 1000); // Delay 1 detik
+        },
+        error: function(xhr, status, error) {
+            // Tangani kesalahan
+            $('#loading').removeClass('active');
+            alert('Failed to delete user');
+        }
+    });
+});
+
+document.getElementById('saveChangesButton').addEventListener('click', function(event) {
+    event.preventDefault();
+
+    $('#loading').addClass('active');
+
+    let userId = $('#editUserId').val();
+    let userName = $('#editUserName').val();
+    let userEmail = $('#editUserEmail').val();
+
+    // Lakukan panggilan AJAX untuk mengupdate pengguna
+    $.ajax({
+        url: `/admin/users/${userId}`,
+        type: 'PUT',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            name: userName,
+            email: userEmail
+        },
+        success: function(result) {
+            // Sembunyikan modal
+            $('#editModal').modal('hide');
+            // Perbarui baris tabel dengan data yang diupdate
+            $(`#user-row-${userId} td:nth-child(1) span`).text(userName);
+            $(`#user-row-${userId} td:nth-child(2) span`).text(userEmail);
+            setTimeout(function() {
+                $('#loading').removeClass('active');
+            }, 1000); // Delay 1 detik
+        },
+        error: function(xhr, status, error) {
+            // Tangani kesalahan
+            $('#loading').removeClass('active');
+            alert('Failed to update user');
+        }
+    });
+});
+
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    var input, filter, table, tr, td, i, j, txtValue;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    table = document.getElementById('userTable');
+    tr = table.getElementsByTagName('tr');
+
+    for (i = 1; i < tr.length; i++) {
+        tr[i].style.display = 'none';
+        td = tr[i].getElementsByTagName('td');
+        for (j = 0; j < td.length; j++) {
+            if (td[j]) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = '';
+                    break;
                 }
             }
-        });
-    
-        function sortTable(n) {
-            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-            table = document.getElementById('userTable');
+        }
+    }
+});
+
+function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById('userTable');
+    switching = true;
+    dir = 'asc';
+
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName('TD')[n];
+            y = rows[i + 1].getElementsByTagName('TD')[n];
+
+            if (dir == 'asc') {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if (dir == 'desc') {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
             switching = true;
-            dir = 'asc';
-    
-            while (switching) {
-                switching = false;
-                rows = table.rows;
-    
-                for (i = 1; i < (rows.length - 1); i++) {
-                    shouldSwitch = false;
-                    x = rows[i].getElementsByTagName('TD')[n];
-                    y = rows[i + 1].getElementsByTagName('TD')[n];
-    
-                    if (dir == 'asc') {
-                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else if (dir == 'desc') {
-                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                }
-    
-                if (shouldSwitch) {
-                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                    switching = true;
-                    switchcount++;
-                } else {
-                    if (switchcount == 0 && dir == 'asc') {
-                        dir = 'desc';
-                        switching = true;
-                    }
-                }
+            switchcount++;
+        } else {
+            if (switchcount == 0 && dir == 'asc') {
+                dir = 'desc';
+                switching = true;
             }
         }
-    
-        function updateTable() {
-            // Fungsi untuk memperbarui data tabel jika diperlukan
-            console.log("Table updated");
-        }
+    }
+}
+
+function updateTable() {
+    // Fungsi untuk memperbarui data tabel jika diperlukan
+    console.log("Table updated");
+}
+</script>
+
     </script>
+    
     
 </body>
 </html>

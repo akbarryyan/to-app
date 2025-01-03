@@ -54,7 +54,7 @@
                             <td>
                                 <div class="d-flex align-items-center gap-8">
                                     <button class="bg-main-50 text-danger-600 py-3 px-14 rounded hover-bg-danger-600 hover-text-white" onclick="confirmDelete('{{ $user->id }}')"><i class="fas fa-trash"></i></button>
-                                    <button class="bg-primary-100 text-success py-3 px-14 rounded hover-bg-success-600 hover-text-white"><i class="fas fa-edit"></i></button>
+                                    <button class="bg-primary-100 text-success py-3 px-14 rounded hover-bg-success-600 hover-text-white" onclick="editUser('{{ $user->id }}', '{{ $user->name }}', '{{ $user->email }}')"><i class="fas fa-edit"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -65,6 +65,7 @@
         </div>
     </div>
 </div>
+
 <script>
     document.getElementById('searchInput').addEventListener('keyup', function() {
             var input, filter, table, tr, td, i, j, txtValue;

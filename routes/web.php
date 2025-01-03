@@ -19,6 +19,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/manage-users', [ManageUsersController::class, 'loadManageUsers'])->name('admin.manage-users');
     Route::delete('/users/{id}', [ManageUsersController::class, 'deleteUser'])->name('admin.users.delete');
+    Route::put('/users/{id}', [ManageUsersController::class, 'updateUser'])->name('admin.users.update');
 
 });
 

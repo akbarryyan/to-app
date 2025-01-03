@@ -19,6 +19,18 @@ class ManageUsersController extends Controller
         return view('admin.manage-users', compact('users'));
     }
 
+    public function updateUser(Request $request, $id)
+    {
+        $user = User::find($id);
+        if ($user) {
+            $user->name = $request->input('name');
+            $user->email = $request->input('email');
+            $user->save();
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false], 404);
+    }
+
     public function deleteUser($id)
     {
         $user = User::find($id);
