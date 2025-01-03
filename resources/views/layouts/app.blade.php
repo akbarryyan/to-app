@@ -148,7 +148,7 @@
                                 $('body').html(response.html);
                                 history.pushState(null, null, '{{ url("/admin/login") }}');
                                 $('#loading').removeClass('active');
-                            }, 3000);
+                            }, 1000);
                         } else {
                             $('#loading').removeClass('active');
                             alert('Logout failed');
