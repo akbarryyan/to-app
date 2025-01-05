@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 
 class AdminDashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Anda bisa menambahkan logika tambahan di sini jika diperlukan
+        if ($request->ajax()) {
+            $html = view('admin.partials.dashboard')->render();
+            return response()->json(['html' => $html], 200);
+        }
+
         return view('admin.dashboard');
     }
 }

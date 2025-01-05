@@ -1,466 +1,123 @@
-@extends('layouts.app')
-@section('content')
-<div class="dashboard-body">
-
-    <div class="breadcrumb-with-buttons mb-24 flex-between flex-wrap gap-8">
-        <!-- Breadcrumb Start -->
-<div class="breadcrumb mb-24">
-<ul class="flex-align gap-4">
-<li><a href="index.html" class="text-gray-200 fw-normal text-15 hover-text-main-600">Home</a></li>
-<li> <span class="text-gray-500 fw-normal d-flex"><i class="ph ph-caret-right"></i></span> </li>
-<li><span class="text-main-600 fw-normal text-15">Students</span></li>
-</ul>
-</div>
-<!-- Breadcrumb End -->
-
-        <!-- Breadcrumb Right Start -->
-        <div class="flex-align gap-8 flex-wrap">
-            <div class="position-relative text-gray-500 flex-align gap-4 text-13">
-                <span class="text-inherit">Sort by: </span>
-                <div class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
-                    <span class="text-lg"><i class="ph ph-funnel-simple"></i></span>
-                    <select class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center">
-                        <option value="1" selected>Popular</option>
-                        <option value="1">Latest</option>
-                        <option value="1">Trending</option>
-                        <option value="1">Matches</option>
-                    </select>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Streaming Site</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900">
+    <!-- Header -->
+    <header class="bg-red-800 text-white px-44">
+        <div class="container mx-auto py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <img src="https://s7.lk21static.buzz/wp-content/themes/dunia21/images/logo-layarkaca21.svg" alt="" class="w-[200px]">
+                    <div class="relative">
+                        <input type="text" placeholder="Cari film, artis, imdb" 
+                               class="px-4 py-1 w-64 text-white bg-transparent border focus:outline-none focus:border-gray-700 placeholder:text-white">
+                        <button class="absolute right-2 mt-[6px]">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="space-x-4">
+                    <a href="#" class="text-sm">720P</a>
+                    <a href="#" class="text-sm">1080P</a>
+                    <a href="#" class="text-sm">DMCA</a>
+                    <a href="#" class="text-sm">REQUEST MOVIE</a>
+                    <a href="#" class="text-sm">FAQ</a>
                 </div>
             </div>
-            <div class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
-                <span class="text-lg"><i class="ph ph-layout"></i></span>
-                <select class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center" id="exportOptions">
-                    <option value="" selected disabled>Export</option>
-                    <option value="csv">CSV</option>
-                    <option value="json">JSON</option>
-                </select>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="bg-pink-600 text-white">
+        <div class="container mx-auto px-4 py-2">
+            <div class="flex items-center justify-between">
+                <div class="space-x-4">
+                    <a href="#" class="text-sm">🏠 Home</a>
+                    <a href="#" class="text-sm">📁 Genre</a>
+                    <a href="#" class="text-sm">💜 Series</a>
+                    <a href="#" class="text-sm">⭐ Populer</a>
+                    <a href="#" class="text-sm">🌐 Negara</a>
+                    <a href="#" class="text-sm">📅 Tahun</a>
+                </div>
+                <div class="space-x-4">
+                    <a href="#" class="bg-pink-500 px-3 py-1 rounded">📋 Playlist</a>
+                    <a href="#" class="bg-pink-500 px-3 py-1 rounded">👍 Rekomendasi</a>
+                </div>
             </div>
         </div>
-        <!-- Breadcrumb Right End -->
-    </div>
-   
+    </nav>
 
-    <div class="card overflow-hidden">
-        <div class="card-body p-0 overflow-x-auto">
-            <table id="studentTable" class="table table-striped">
-                <thead>
-                    <tr>
-                        <th class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox" id="selectAll">
-                            </div>
-                        </th>
-                        <th class="h6 text-gray-300">Students</th>
-                        <th class="h6 text-gray-300">Email ID</th>
-                        <th class="h6 text-gray-300">Courses</th>
-                        <th class="h6 text-gray-300">Certificates Earned</th>
-                        <th class="h6 text-gray-300">Status</th>
-                        <th class="h6 text-gray-300">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img1.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Jane Cooper</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">12</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">10</span>
-                        </td>
-                        <td>
-                            <span class="text-13 py-2 px-8 bg-warning-50 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-warning-600 rounded-circle flex-shrink-0"></span>
-                                In Progress
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img2.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Guy Hawkins</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">18</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">12</span>
-                        </td>
-                        <td>
-                            <span class="text-13 py-2 px-8 bg-warning-50 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-warning-600 rounded-circle flex-shrink-0"></span>
-                                In Progress
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img3.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Dianne Russell</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">10</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">08</span>
-                        </td>
-                        <td>
-                            <span class="text-13 py-2 px-8 bg-warning-50 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-warning-600 rounded-circle flex-shrink-0"></span>
-                                In Progress
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img4.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Dianne Russell</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">08</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">09</span>
-                        </td>
-                        <td>
-                            <span class="text-13 py-2 px-8 bg-warning-50 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-warning-600 rounded-circle flex-shrink-0"></span>
-                                In Progress
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img5.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Ronald Richards</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">15</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">08</span>
-                        </td>
-                        <td>
-                            <span class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-success-600 rounded-circle flex-shrink-0"></span>
-                                Completed
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img2.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Jenny Wilson</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">18</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">09</span>
-                        </td>
-                        <td>
-                            <span class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-success-600 rounded-circle flex-shrink-0"></span>
-                                Completed
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img3.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Devon Lane</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">22</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">12</span>
-                        </td>
-                        <td>
-                            <span class="text-13 py-2 px-8 bg-warning-50 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-warning-600 rounded-circle flex-shrink-0"></span>
-                                In Progress
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img4.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Eleanor Pena</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">07</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">08</span>
-                        </td>
-                        <td>
-                                <span class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-success-600 rounded-circle flex-shrink-0"></span>
-                                Completed
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img5.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Robert Fox</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">10</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">02</span>
-                        </td>
-                        <td>
-                                <span class="text-13 py-2 px-8 bg-success-50 text-success-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-success-600 rounded-circle flex-shrink-0"></span>
-                                Completed
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img1.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Ronald Richards</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">09</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">01</span>
-                        </td>
-                        <td>
-                            <span class="text-13 py-2 px-8 bg-warning-50 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-warning-600 rounded-circle flex-shrink-0"></span>
-                                In Progress
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img2.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Jacob Jones</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">08</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">05</span>
-                        </td>
-                        <td>
-                            <span class="text-13 py-2 px-8 bg-warning-50 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-warning-600 rounded-circle flex-shrink-0"></span>
-                                In Progress
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fixed-width">
-                            <div class="form-check">
-                                <input class="form-check-input border-gray-200 rounded-4" type="checkbox">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="flex-align gap-8">
-                                <img src="assets/images/thumbs/student-img1.png" alt="" class="w-40 h-40 rounded-circle">
-                                <span class="h6 mb-0 fw-medium text-gray-300">Ronald Richards</span>
-                            </div>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">example10mail.com</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">09</span>
-                        </td>
-                        <td>
-                            <span class="h6 mb-0 fw-medium text-gray-300">01</span>
-                        </td>
-                        <td>
-                            <span class="text-13 py-2 px-8 bg-warning-50 text-warning-600 d-inline-flex align-items-center gap-8 rounded-pill">
-                                <span class="w-6 h-6 bg-warning-600 rounded-circle flex-shrink-0"></span>
-                                In Progress
-                            </span>
-                        </td>
-                        <td>
-                            <a href="#" class="bg-main-50 text-main-600 py-2 px-14 rounded-pill hover-bg-main-600 hover-text-white">View More</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="card-footer flex-between flex-wrap">
-            <span class="text-gray-900">Showing 1 to 10 of 12 entries</span>
-            <ul class="pagination flex-align flex-wrap">
-                <li class="page-item active">
-                    <a class="page-link h-44 w-44 flex-center text-15 rounded-8 fw-medium" href="#">1</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link h-44 w-44 flex-center text-15 rounded-8 fw-medium" href="#">2</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link h-44 w-44 flex-center text-15 rounded-8 fw-medium" href="#">3</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link h-44 w-44 flex-center text-15 rounded-8 fw-medium" href="#">...</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link h-44 w-44 flex-center text-15 rounded-8 fw-medium" href="#">8</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link h-44 w-44 flex-center text-15 rounded-8 fw-medium" href="#">9</a>
-                </li>
-                <li class="page-item">
-                    <a class="page-link h-44 w-44 flex-center text-15 rounded-8 fw-medium" href="#">10</a>
-                </li>
-            </ul>
+    <!-- Categories -->
+    <div class="bg-yellow-500">
+        <div class="container mx-auto px-4 py-2">
+            <div class="flex flex-wrap gap-4 justify-center">
+                <a href="#" class="text-sm">ACTION</a>
+                <a href="#" class="text-sm">ANIME</a>
+                <a href="#" class="text-sm">HORROR</a>
+                <a href="#" class="text-sm">SCI-FI</a>
+                <a href="#" class="text-sm">KOMEDI</a>
+                <a href="#" class="text-sm">ROMANCE</a>
+                <a href="#" class="text-sm">MANDARIN</a>
+                <a href="#" class="text-sm">INDIA</a>
+                <a href="#" class="text-sm">JEPANG</a>
+                <a href="#" class="text-sm">KOREA</a>
+                <a href="#" class="text-sm">THAILAND</a>
+                <a href="#" class="text-sm">2023</a>
+                <a href="#" class="text-sm">2024</a>
+                <a href="#" class="text-sm">BLURAY</a>
+                <a href="#" class="text-sm">TERPOPULER</a>
+            </div>
         </div>
     </div>
-    
-</div>
-@endsection
+
+    <!-- Social Media Buttons -->
+    <div class="container mx-auto px-4 py-4">
+        <div class="flex gap-2">
+            <button class="bg-blue-600 text-white px-4 py-2 rounded">Facebook</button>
+            <button class="bg-blue-400 text-white px-4 py-2 rounded">Twitter</button>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded">Telegram</button>
+            <button class="bg-green-500 text-white px-4 py-2 rounded">Whatsapp</button>
+        </div>
+    </div>
+
+    <!-- Movie Grid -->
+    <div class="container mx-auto px-4 py-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            <!-- Movie Card Template -->
+            <div class="relative group">
+                <div class="relative">
+                    <img src="/api/placeholder/200/300" alt="Movie Poster" class="w-full rounded-lg">
+                    <div class="absolute top-2 right-2 bg-yellow-500 text-black px-2 py-1 rounded text-sm">8.0</div>
+                    <div class="absolute top-2 left-2 bg-pink-600 text-white px-2 py-1 rounded text-sm">EPS 8</div>
+                    <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black p-2">
+                        <h3 class="text-white text-sm font-medium">Movie Title (2024)</h3>
+                    </div>
+                </div>
+            </div>
+            <!-- Repeat movie cards as needed -->
+        </div>
+    </div>
+
+    <!-- View All Button -->
+    <div class="text-center py-4">
+        <button class="bg-pink-600 text-white px-6 py-2 rounded-lg">LIHAT SEMUA FILM UNGGULAN</button>
+    </div>
+
+    <!-- Promotional Banners -->
+    <div class="container mx-auto px-4 py-4 grid md:grid-cols-2 gap-4">
+        <div class="bg-blue-900 rounded-lg p-4">
+            <img src="/api/placeholder/800/200" alt="Promo Banner 1" class="w-full">
+        </div>
+        <div class="bg-blue-900 rounded-lg p-4">
+            <img src="/api/placeholder/800/200" alt="Promo Banner 2" class="w-full">
+        </div>
+    </div>
+</body>
+</html>
