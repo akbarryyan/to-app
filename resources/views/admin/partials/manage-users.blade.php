@@ -12,6 +12,7 @@
 
         <!-- Breadcrumb Right Start -->
         <div class="flex-align gap-8 flex-wrap">
+            <button class="btn btn-main rounded-pill" onclick="showAddUserModal()">Add User</button>
             <div class="flex-align text-gray-500 text-13 border border-gray-100 rounded-4 ps-20 focus-border-main-600 bg-white">
                 <span class="text-lg"><i class="ph ph-layout"></i></span>
                 <select class="form-control ps-8 pe-20 py-16 border-0 text-inherit rounded-4 text-center" id="exportOptions">
@@ -65,6 +66,7 @@
         </div>
     </div>
 </div>
+
 
 <script>
     document.getElementById('searchInput').addEventListener('keyup', function() {

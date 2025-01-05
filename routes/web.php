@@ -20,7 +20,7 @@ Route::prefix('admin')->group(function () {
     Route::get('/manage-users', [ManageUsersController::class, 'loadManageUsers'])->name('admin.manage-users');
     Route::delete('/users/{id}', [ManageUsersController::class, 'deleteUser'])->name('admin.users.delete');
     Route::put('/users/{id}', [ManageUsersController::class, 'updateUser'])->name('admin.users.update');
-
+    Route::post('/users', [ManageUsersController::class, 'addUser'])->name('admin.users.add');
 });
 
 

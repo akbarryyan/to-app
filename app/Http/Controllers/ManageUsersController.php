@@ -40,4 +40,15 @@ class ManageUsersController extends Controller
         }
         return response()->json(['success' => false], 404);
     }
+
+    public function addUser(Request $request)
+    {
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password')); // Enkripsi password
+        $user->save();
+        return response()->json(['id' => $user->id, 'name' => $user->name, 'email' => $user->email]);
+    }
+
 }
