@@ -125,6 +125,8 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script>
         $(document).ready(function() {
             $.ajaxSetup({
@@ -296,226 +298,216 @@
 
 
     <script>
-        let userIdToDelete;
-        let userIdToEdit;
+        toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": true,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": true,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    };
 
-        // Fungsi untuk menampilkan modal konfirmasi hapus
-        function confirmDelete(userId) {
-            userIdToDelete = userId;
-            $('#deleteModal').modal('show');
-        }
+    let userIdToDelete;
+    let userIdToEdit;
 
-        // Fungsi untuk menampilkan modal edit
-        function editUser(userId, userName, userEmail) {
-            userIdToEdit = userId;
-            $('#editUserId').val(userId);
-            $('#editUserName').val(userName);
-            $('#editUserEmail').val(userEmail);
-            $('#editModal').modal('show');
-        }
+    function confirmDelete(userId) {
+        userIdToDelete = userId;
+        $('#deleteModal').modal('show');
+    }
 
-        // Fungsi untuk menampilkan modal tambah pengguna
-        function showAddUserModal() {
-            $('#addUserForm')[0].reset();
-            $('#addUserModal').modal('show');
-        }
+    function editUser(userId, userName, userEmail) {
+        userIdToEdit = userId;
+        $('#editUserId').val(userId);
+        $('#editUserName').val(userName);
+        $('#editUserEmail').val(userEmail);
+        $('#editModal').modal('show');
+    }
 
-        document.getElementById('deleteButton').addEventListener('click', function(event) {
-            event.preventDefault();
+    function showAddUserModal() {
+        $('#addUserForm')[0].reset();
+        $('#addUserModal').modal('show');
+    }
 
-            $('#loading').addClass('active');
-            // Lakukan panggilan AJAX untuk menghapus pengguna berdasarkan userIdToDelete
-            $.ajax({
-                url: `/admin/users/${userIdToDelete}`,
-                type: 'DELETE',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(result) {
-                    console.log('Delete user success:', result);
-                    // Sembunyikan modal
-                    $('#deleteModal').modal('hide');
-                    $(`#user-row-${userIdToDelete}`).fadeOut('slow', function() {
-                        $(this).remove();
-                    });
-                    setTimeout(function() {
-                        $('#loading').removeClass('active');
-                    }, 1000); // Delay 1 detik
-                },
-                error: function(xhr, status, error) {
-                    $('#loading').removeClass('active');
-                    console.error('Delete user error:', xhr.responseText);
-                    alert('Failed to delete user');
-                }
-            });
-        });
+    $('#deleteButton').on('click', function(event) {
+        event.preventDefault();
+        $('#loading').addClass('active');
 
-        document.getElementById('saveChangesButton').addEventListener('click', function(event) {
-            event.preventDefault();
-
-            $('#loading').addClass('active');
-
-            let userId = $('#editUserId').val();
-            let userName = $('#editUserName').val();
-            let userEmail = $('#editUserEmail').val();
-
-            // Lakukan panggilan AJAX untuk mengupdate pengguna
-            $.ajax({
-                url: `/admin/users/${userId}`,
-                type: 'PUT',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    name: userName,
-                    email: userEmail
-                },
-                success: function(result) {
-                    console.log('Update user success:', result);
-                    // Sembunyikan modal
-                    $('#editModal').modal('hide');
-                    // Perbarui baris tabel dengan data yang diupdate
-                    $(`#user-row-${userId} td:nth-child(1) span`).text(userName);
-                    $(`#user-row-${userId} td:nth-child(2) span`).text(userEmail);
-                    setTimeout(function() {
-                        $('#loading').removeClass('active');
-                    }, 1000); // Delay 1 detik
-                },
-                error: function(xhr, status, error) {
-                    $('#loading').removeClass('active');
-                    console.error('Update user error:', xhr.responseText);
-                    alert('Failed to update user');
-                }
-            });
-        });
-
-        document.getElementById('addUserButton').addEventListener('click', function(event) {
-            event.preventDefault();
-
-            $('#loading').addClass('active');
-
-            let userName = $('#addUserName').val();
-            let userEmail = $('#addUserEmail').val();
-            let userPassword = $('#addUserPassword').val();
-
-            console.log('Add user data:', { name: userName, email: userEmail, password: userPassword });
-
-            // Lakukan panggilan AJAX untuk menambah pengguna
-            $.ajax({
-                url: `/admin/users`,
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    name: userName,
-                    email: userEmail,
-                    password: userPassword
-                },
-                success: function(result) {
-                    console.log('Add user success:', result);
-                    // Sembunyikan modal
-                    $('#addUserModal').modal('hide');
-                    // Tambahkan baris baru ke tabel
-                    $('#userTable tbody').append(`
-                        <tr id="user-row-${result.id}">
-                            <td>
-                                <div class="flex-align gap-8">
-                                    <img src="https://html.themeholy.com/edmate/assets/images/thumbs/student-img1.png" alt="" class="w-40 h-40 rounded-circle">
-                                    <span class="h6 mb-0 fw-medium text-gray-300">${result.name}</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="h6 mb-0 fw-medium text-gray-300">${result.email}</span>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center gap-8">
-                                    <button class="bg-main-50 text-danger-600 py-3 px-14 rounded hover-bg-danger-600 hover-text-white" onclick="confirmDelete('${result.id}')"><i class="fas fa-trash"></i></button>
-                                    <button class="bg-primary-100 text-success py-3 px-14 rounded hover-bg-success-600 hover-text-white" onclick="editUser('${result.id}', '${result.name}', '${result.email}')"><i class="fas fa-edit"></i></button>
-                                </div>
-                            </td>
-                        </tr>
-                    `);
-                    setTimeout(function() {
-                        $('#loading').removeClass('active');
-                    }, 1000); // Delay 1 detik
-                },
-                error: function(xhr, status, error) {
-                    $('#loading').removeClass('active');
-                    console.error('Add user error:', xhr.responseText);
-                    alert('Failed to add user');
-                }
-            });
-        });
-
-        document.getElementById('searchInput').addEventListener('keyup', function() {
-            var input, filter, table, tr, td, i, j, txtValue;
-            input = document.getElementById('searchInput');
-            filter = input.value.toUpperCase();
-            table = document.getElementById('userTable');
-            tr = table.getElementsByTagName('tr');
-
-            for (i = 1; i < tr.length; i++) {
-                tr[i].style.display = 'none';
-                td = tr[i].getElementsByTagName('td');
-                for (j = 0; j < td.length; j++) {
-                    if (td[j]) {
-                        txtValue = td[j].textContent || td[j].innerText;
-                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                            tr[i].style.display = '';
-                            break;
-                        }
-                    }
-                }
+        $.ajax({
+            url: `/admin/users/${userIdToDelete}`,
+            type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                $('#deleteModal').modal('hide');
+                $(`#user-row-${userIdToDelete}`).fadeOut('slow', function() {
+                    $(this).remove();
+                });
+                toastr.success('Pengguna berhasil dihapus!', 'Berhasil');
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Gagal menghapus pengguna', 'Error');
+            },
+            complete: function() {
+                $('#loading').removeClass('active');
             }
         });
+    });
 
-        function sortTable(n) {
-            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-            table = document.getElementById('userTable');
+    $('#saveChangesButton').on('click', function(event) {
+        event.preventDefault();
+        $('#loading').addClass('active');
+
+        let userId = $('#editUserId').val();
+        let userName = $('#editUserName').val();
+        let userEmail = $('#editUserEmail').val();
+
+        $.ajax({
+            url: `/admin/users/${userId}`,
+            type: 'PUT',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: { name: userName, email: userEmail },
+            success: function(result) {
+                $('#editModal').modal('hide');
+                $(`#user-row-${userId} td:nth-child(1) span`).text(userName);
+                $(`#user-row-${userId} td:nth-child(2) span`).text(userEmail);
+                toastr.success('Data pengguna berhasil diperbarui!', 'Berhasil');
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Gagal memperbarui data pengguna', 'Error');
+            },
+            complete: function() {
+                $('#loading').removeClass('active');
+            }
+        });
+    });
+
+    $('#addUserButton').on('click', function(event) {
+        event.preventDefault();
+        $('#loading').addClass('active');
+
+        let userName = $('#addUserName').val();
+        let userEmail = $('#addUserEmail').val();
+        let userPassword = $('#addUserPassword').val();
+
+        $.ajax({
+            url: `/admin/users`,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: { name: userName, email: userEmail, password: userPassword },
+            success: function(result) {
+                $('#addUserModal').modal('hide');
+                $('#userTable tbody').append(`
+                    <tr id="user-row-${result.data.id}">
+                        <td>
+                            <div class="flex-align gap-8">
+                                <img src="https://html.themeholy.com/edmate/assets/images/thumbs/student-img1.png" alt="" class="w-40 h-40 rounded-circle">
+                                <span class="h6 mb-0 fw-medium text-gray-300">${result.data.name}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="h6 mb-0 fw-medium text-gray-300">${result.data.email}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-8">
+                                <button class="btn btn-danger" onclick="confirmDelete('${result.data.id}')"><i class="fas fa-trash"></i></button>
+                                <button class="btn btn-success" onclick="editUser('${result.data.id}', '${result.data.name}', '${result.data.email}')"><i class="fas fa-edit"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+                toastr.success('Pengguna berhasil ditambahkan!', 'Berhasil');
+            },
+            error: function(xhr, status, error) {
+                toastr.error('Gagal menambahkan pengguna', 'Error');
+            },
+            complete: function() {
+                $('#loading').removeClass('active');
+            }
+        });
+    });
+
+document.getElementById('searchInput').addEventListener('keyup', function() {
+    var input, filter, table, tr, td, i, j, txtValue;
+    input = document.getElementById('searchInput');
+    filter = input.value.toUpperCase();
+    table = document.getElementById('userTable');
+    tr = table.getElementsByTagName('tr');
+
+    for (i = 1; i < tr.length; i++) {
+        tr[i].style.display = 'none';
+        td = tr[i].getElementsByTagName('td');
+        for (j = 0; j < td.length; j++) {
+            if (td[j]) {
+                txtValue = td[j].textContent || td[j].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = '';
+                    break;
+                }
+            }
+        }
+    }
+});
+
+function sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById('userTable');
+    switching = true;
+    dir = 'asc';
+
+    while (switching) {
+        switching = false;
+        rows = table.rows;
+
+        for (i = 1; i < (rows.length - 1); i++) {
+            shouldSwitch = false;
+            x = rows[i].getElementsByTagName('TD')[n];
+            y = rows[i + 1].getElementsByTagName('TD')[n];
+
+            if (dir == 'asc') {
+                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            } else if ( dir == 'desc') {
+                if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                    shouldSwitch = true;
+                    break;
+                }
+            }
+        }
+
+        if (shouldSwitch) {
+            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
             switching = true;
-            dir = 'asc';
-
-            while (switching) {
-                switching = false;
-                rows = table.rows;
-
-                for (i = 1; i < (rows.length - 1); i++) {
-                    shouldSwitch = false;
-                    x = rows[i].getElementsByTagName('TD')[n];
-                    y = rows[i + 1].getElementsByTagName('TD')[n];
-
-                    if (dir == 'asc') {
-                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    } else if (dir == 'desc') {
-                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-                            shouldSwitch = true;
-                            break;
-                        }
-                    }
-                }
-
-                if (shouldSwitch) {
-                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-                    switching = true;
-                    switchcount++;
-                } else {
-                    if (switchcount == 0 && dir == 'asc') {
-                        dir = 'desc';
-                        switching = true;
-                    }
-                }
+            switchcount++;
+        } else {
+            if (switchcount == 0 && dir == 'asc') {
+                dir = 'desc';
+                switching = true;
             }
         }
+    }
+}
 
-        function updateTable() {
-            // Fungsi untuk memperbarui data tabel jika diperlukan
-            console.log("Table updated");
-        }
-    </script>
+function updateTable() {
+    // Fungsi untuk memperbarui data tabel jika diperlukan
+    console.log("Table updated");
+}
+</script>
     
     
 </body>

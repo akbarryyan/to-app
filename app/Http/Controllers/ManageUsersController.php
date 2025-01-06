@@ -26,9 +26,19 @@ class ManageUsersController extends Controller
             $user->name = $request->input('name');
             $user->email = $request->input('email');
             $user->save();
-            return response()->json(['success' => true]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data pengguna berhasil diperbarui!',
+                'type' => 'success', // Untuk toastr
+            ]);
         }
-        return response()->json(['success' => false], 404);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Pengguna tidak ditemukan!',
+            'type' => 'error', // Untuk toastr
+        ], 404);
     }
 
     public function deleteUser($id)
@@ -36,19 +46,44 @@ class ManageUsersController extends Controller
         $user = User::find($id);
         if ($user) {
             $user->delete();
-            return response()->json(['success' => true]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Pengguna berhasil dihapus!',
+                'type' => 'success', // Untuk toastr
+            ]);
         }
-        return response()->json(['success' => false], 404);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Pengguna tidak ditemukan!',
+            'type' => 'error', // Untuk toastr
+        ], 404);
     }
 
     public function addUser(Request $request)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+        ]);
+
         $user = new User();
         $user->name = $request->input('name');
         $user->email = $request->input('email');
-        $user->password = bcrypt($request->input('password')); // Enkripsi password
+        $user->password = bcrypt($request->input('password'));
         $user->save();
-        return response()->json(['id' => $user->id, 'name' => $user->name, 'email' => $user->email]);
-    }
 
+        return response()->json([
+            'success' => true,
+            'message' => 'Pengguna berhasil ditambahkan!',
+            'type' => 'success', // Untuk toastr
+            'data' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ],
+        ]);
+    }
 }
