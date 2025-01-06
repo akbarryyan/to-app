@@ -423,8 +423,8 @@
                         </td>
                         <td>
                             <div class="d-flex align-items-center gap-8">
-                                <button class="btn btn-danger" onclick="confirmDelete('${result.data.id}')"><i class="fas fa-trash"></i></button>
-                                <button class="btn btn-success" onclick="editUser('${result.data.id}', '${result.data.name}', '${result.data.email}')"><i class="fas fa-edit"></i></button>
+                                <button class="bg-main-50 text-danger-600 py-3 px-14 rounded hover-bg-danger-600 hover-text-white" onclick="confirmDelete('${result.data.id}')"><i class="fas fa-trash"></i></button>
+                                <button class="bg-primary-100 text-success py-3 px-14 rounded hover-bg-success-600 hover-text-white" onclick="editUser('${result.data.id}', '${result.data.name}', '${result.data.email}')"><i class="fas fa-edit"></i></button>
                             </div>
                         </td>
                     </tr>
