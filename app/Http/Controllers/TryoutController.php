@@ -30,7 +30,7 @@ class TryoutController extends Controller
                 'end_date' => 'nullable|date', // Ubah menjadi nullable
                 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'price' => 'required|numeric|min:0',
-                'is_paid' => 'nullable|boolean',
+                'is_paid' => 'required|boolean',
             ]);
 
             $tryout->name = $request->input('name');
@@ -38,7 +38,7 @@ class TryoutController extends Controller
             $tryout->start_date = $request->input('start_date');
             $tryout->end_date = $request->input('end_date');
             $tryout->price = $request->input('price');
-            $tryout->is_paid = $request->has('is_paid');
+            $tryout->is_paid = $request->boolean('is_paid');
 
             if ($request->hasFile('image')) {
                 $imagePath = $request->file('image')->store('images/tryouts', 'public');
@@ -90,7 +90,7 @@ class TryoutController extends Controller
             'end_date' => 'nullable|date', // Ubah menjadi nullable
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'price' => 'required|numeric|min:0',
-            'is_paid' => 'nullable|boolean',
+            'is_paid' => 'required|boolean',
         ]);
 
         $tryout = new Tryout();
@@ -99,7 +99,7 @@ class TryoutController extends Controller
         $tryout->start_date = $request->input('start_date');
         $tryout->end_date = $request->input('end_date');
         $tryout->price = $request->input('price');
-        $tryout->is_paid = $request->has('is_paid');
+        $tryout->is_paid = $request->boolean('is_paid');
 
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images/tryouts', 'public');

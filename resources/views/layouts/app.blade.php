@@ -407,6 +407,215 @@
 
     <script>
         toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        let tryoutIdToDelete;
+        let tryoutIdToEdit;
+    
+        // Fungsi untuk menampilkan modal konfirmasi hapus
+        function confirmDeleteTryout(tryoutId) {
+            tryoutIdToDelete = tryoutId;
+            $('#deleteTryoutModal').modal('show');
+        }
+    
+        // Fungsi untuk menampilkan modal edit
+        function editTryout(tryoutId, tryoutName, tryoutDescription, tryoutStartDate, tryoutEndDate, tryoutPrice, tryoutIsPaid) {
+            tryoutIdToEdit = tryoutId;
+            $('#editTryoutId').val(tryoutId);
+            $('#editName').val(tryoutName);
+            $('#editDescription').val(tryoutDescription);
+            $('#editStartDate').val(tryoutStartDate);
+            $('#editEndDate').val(tryoutEndDate);
+            $('#editPrice').val(tryoutPrice);
+            $('#editIsPaid').prop('checked', tryoutIsPaid == 1);
+            $('#editTryoutModal').modal('show');
+        }
+    
+        // Fungsi untuk menampilkan modal tambah tryout
+        function showAddTryoutModal() {
+            $('#addTryoutForm')[0].reset();
+            $('#addTryoutModal').modal('show');
+        }
+    
+        // Fungsi untuk menghapus tryout
+        $(document).on('click', '#deleteTryoutButton', function(event) {
+            event.preventDefault();
+            $('#loading').addClass('active');
+            $.ajax({
+                url: `/admin/tryouts/${tryoutIdToDelete}`,
+                type: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(result) {
+                    console.log('Delete tryout success:', result);
+                    $('#deleteTryoutModal').modal('hide');
+                    $(`#tryout-row-${tryoutIdToDelete}`).fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    toastr.success(result.message);
+                },
+                error: function(xhr, status, error) {
+                    $('#loading').removeClass('active');
+                    console.error('Delete tryout error:', xhr.responseText);
+                    toastr.error(xhr.responseText);
+                }
+            });
+        });
+    
+        // Fungsi untuk menyimpan perubahan tryout
+        $(document).on('click', '#saveChangesButtonTryout', function(event) {
+            event.preventDefault();
+            $('#loading').addClass('active');
+    
+            let formData = new FormData($('#editTryoutForm')[0]);
+            formData.set('is_paid', $('#editIsPaid').is(':checked') ? 1 : 0);
+    
+            $.ajax({
+                url: `/admin/tryouts/${tryoutIdToEdit}`,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'X-HTTP-Method-Override': 'PUT'
+                },
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(result) {
+                    console.log('Update tryout success:', result);
+                    $('#editTryoutModal').modal('hide');
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    toastr.success(result.message);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    $('#loading').removeClass('active');
+                    console.error('Update tryout error:', xhr.responseText);
+                    toastr.error(xhr.responseText);
+                }
+            });
+        });
+    
+        // Fungsi untuk menambah tryout
+        $(document).on('click', '#addTryoutButton', function(event) {
+            event.preventDefault();
+            $('#loading').addClass('active');
+    
+            let formData = new FormData($('#addTryoutForm')[0]);
+            formData.set('is_paid', $('#is_paid').is(':checked'));
+    
+            $.ajax({
+                url: `/admin/tryouts`,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(result) {
+                    console.log('Add tryout success:', result);
+                    $('#addTryoutModal').modal('hide');
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    toastr.success(result.message);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    $('#loading').removeClass('active');
+                    console.error('Add tryout error:', xhr.responseText);
+                    toastr.error(xhr.responseText);
+                }
+            });
+        });
+        
+        // Fungsi untuk pencarian
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            table = document.getElementById('tryoutTable');
+            tr = table.getElementsByTagName('tr');
+
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = 'none';
+                td = tr[i].getElementsByTagName('td');
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = '';
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+        // Fungsi untuk mengurutkan tabel
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById('tryoutTable');
+            switching = true;
+            dir = 'asc'; 
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName('TD')[n];
+                    y = rows[i + 1].getElementsByTagName('TD')[n];
+
+                    if (dir == 'asc') {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == 'desc') {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == 'asc') {
+                        dir = 'desc';
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script>
+        toastr.options = {
         "closeButton": true,
         "debug": false,
         "newestOnTop": true,

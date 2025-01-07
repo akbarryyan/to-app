@@ -67,7 +67,6 @@
     </div>
 </div>
 
-
 <script>
     document.getElementById('searchInput').addEventListener('keyup', function() {
             var input, filter, table, tr, td, i, j, txtValue;

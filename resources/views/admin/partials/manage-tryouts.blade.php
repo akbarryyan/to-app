@@ -35,18 +35,12 @@
                 <table id="tryoutTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th class="h6 text-gray-300" onclick="sortTable(0)">Name <i class="fas fa-sort cursor-pointer"></i>
-                            </th>
-                            <th class="h6 text-gray-300" onclick="sortTable(1)">Description <i class="fas fa-sort cursor-pointer"></i>
-                            </th>
-                            <th class="h6 text-gray-300" onclick="sortTable(2)">Start Date <i class="fas fa-sort cursor-pointer"></i>
-                            </th>
-                            <th class="h6 text-gray-300" onclick="sortTable(3)">End Date <i class="fas fa-sort cursor-pointer"></i>
-                            </th>
-                            <th class="h6 text-gray-300" onclick="sortTable(4)">Price <i class="fas fa-sort cursor-pointer"></i>
-                            </th>
-                            <th class="h6 text-gray-300" onclick="sortTable(5)">Paid <i class="fas fa-sort cursor-pointer"></i>
-                            </th>
+                            <th class="h6 text-gray-300" onclick="sortTable(0)">Name <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(1)">Description <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(2)">Start Date <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(3)">End Date <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(4)">Price <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(5)">Paid <i class="fas fa-sort cursor-pointer"></i></th>
                             <th class="h6 text-gray-300">Actions</th>
                         </tr>
                     </thead>
@@ -61,10 +55,8 @@
                             <td class="h6 mb-0 fw-medium text-gray-300">{!! $tryout->is_paid ? '<i class="fas fa-check-circle text-success"></i>' : '<i class="fas fa-times-circle text-danger"></i>' !!}</td>
                             <td>
                                 <div class="d-flex align-items-center gap-8">
-                                    <button class="bg-main-50 text-danger-600 py-3 px-14 rounded hover-bg-danger-600 hover-text-white" onclick="confirmDeleteTryout('{{ $tryout->id }}')"><i class="fas fa-trash"></i>
-                                    </button>
-                                    <button class="bg-primary-100 text-success py-3 px-14 rounded hover-bg-success-600 hover-text-white" onclick="editTryout('{{ $tryout->id }}', '{{ $tryout->name }}', '{{ $tryout->description }}', '{{ $tryout->start_date }}', '{{ $tryout->end_date }}', '{{ $tryout->price }}', '{{ $tryout->is_paid }}')"><i class="fas fa-edit"></i>
-                                    </button>
+                                    <button class="bg-main-50 text-danger-600 py-3 px-14 rounded hover-bg-danger-600 hover-text-white" onclick="confirmDelete('{{ $tryout->id }}')"><i class="fas fa-trash"></i></button>
+                                    <button class="bg-primary-100 text-success py-3 px-14 rounded hover-bg-success-600 hover-text-white" onclick="editTryout('{{ $tryout->id }}', '{{ $tryout->name }}', '{{ $tryout->description }}', '{{ $tryout->start_date }}', '{{ $tryout->end_date }}', '{{ $tryout->price }}', '{{ $tryout->is_paid }}')"><i class="fas fa-edit"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -75,3 +67,69 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Fungsi untuk pencarian
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+        var input, filter, table, tr, td, i, j, txtValue;
+        input = document.getElementById('searchInput');
+        filter = input.value.toUpperCase();
+        table = document.getElementById('tryoutTable');
+        tr = table.getElementsByTagName('tr');
+
+        for (i = 1; i < tr.length; i++) {
+            tr[i].style.display = 'none';
+            td = tr[i].getElementsByTagName('td');
+            for (j = 0; j < td.length; j++) {
+                if (td[j]) {
+                    txtValue = td[j].textContent || td[j].innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = '';
+                        break;
+                    }
+                }
+            }
+        }
+    });
+
+    function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById('tryoutTable');
+            switching = true;
+            dir = 'asc'; 
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName('TD')[n];
+                    y = rows[i + 1].getElementsByTagName('TD')[n];
+
+                    if (dir == 'asc') {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == 'desc') {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == 'asc') {
+                        dir = 'desc';
+                        switching = true;
+                    }
+                }
+            }
+        }
+</script>
