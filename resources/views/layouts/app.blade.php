@@ -405,6 +405,106 @@
         </div>
     </div>
 
+    <!-- Modal Tambah Kategori -->
+    {{-- <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCategoryForm">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="duration" class="form-label">Duration (in minutes)</label>
+                            <input type="number" class="form-control" id="duration" name="duration" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tryout_id" class="form-label">Tryout</label>
+                            <select class="form-control" id="tryout_id" name="tryout_id" required>
+                                @foreach($tryouts as $tryout)
+                                    <option value="{{ $tryout->id }}">{{ $tryout->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="addCategoryButton">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+    <!-- Modal Edit Kategori -->
+    {{-- <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editCategoryForm">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" id="editCategoryId" name="id">
+                        <div class="mb-3">
+                            <label for="editName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="editDescription" name="description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDuration" class="form-label">Duration (in minutes)</label>
+                            <input type="number" class="form-control" id="editDuration" name="duration" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTryoutId" class="form-label">Tryout</label>
+                            <select class="form-control" id="editTryoutId" name="tryout_id" required>
+                                @foreach($tryouts as $tryout)
+                                    <option value="{{ $tryout->id }}">{{ $tryout->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="saveChangesButtonCategory">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+    <!-- Modal Konfirmasi Hapus Kategori -->
+    <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCategoryModalLabel">Delete Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this category?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="deleteCategoryButton">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
     <script>
         toastr.options = {
             "closeButton": true,

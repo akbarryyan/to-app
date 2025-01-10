@@ -11,13 +11,14 @@ class CategoriesController extends Controller
     public function loadManageCategories(Request $request)
     {
         $categories = Category::all();
+        $tryouts = Tryout::all();
 
         if ($request->ajax()) {
-            $html = view('admin.partials.manage-categories', compact('categories'))->render();
+            $html = view('admin.partials.manage-categories', compact('categories', 'tryouts'))->render();
             return response()->json(['html' => $html], 200);
         }
 
-        return view('admin.manage-categories', compact('categories'));
+        return view('admin.manage-categories', compact('categories', 'tryouts'));
     }
 
     public function addCategory(Request $request)
