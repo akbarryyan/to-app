@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\ManageUsersController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\TryoutController;
+use App\Http\Controllers\CategoriesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,4 +27,8 @@ Route::prefix('admin')->group(function () {
     Route::post('/tryouts', [TryoutController::class, 'addTryout'])->name('admin.tryouts.store');
     Route::put('/tryouts/{id}', [TryoutController::class, 'updateTryout'])->name('admin.tryouts.update');
     Route::delete('/tryouts/{id}', [TryoutController::class, 'deleteTryout'])->name('admin.tryouts.delete');
+    Route::get('/categories', [CategoriesController::class, 'loadManageCategories'])->name('admin.categories.index');
+    Route::post('/categories', [CategoriesController::class, 'addCategory'])->name('admin.categories.store');
+    Route::put('/categories/{id}', [CategoriesController::class, 'updateCategory'])->name('admin.categories.update');
+    Route::delete('/categories/{id}', [CategoriesController::class, 'deleteCategory'])->name('admin.categories.delete');
 });
