@@ -54,6 +54,12 @@
                     </a>
                 </li>
                 <li class="sidebar-menu__item">
+                    <a href="analytics.html" class="sidebar-menu__link">
+                        <span class="icon"><i class="ph ph-chart-bar"></i></span>
+                        <span class="text">Categories / Bab</span>
+                    </a>
+                </li>
+                <li class="sidebar-menu__item">
                     <a href="mentors.html" class="sidebar-menu__link">
                         <span class="icon"><i class="ph ph-users"></i></span>
                         <span class="text">Mentors</span>
@@ -69,12 +75,6 @@
                     <a href="message.html" class="sidebar-menu__link">
                         <span class="icon"><i class="ph ph-chats-teardrop"></i></span>
                         <span class="text">Messages</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu__item">
-                    <a href="analytics.html" class="sidebar-menu__link">
-                        <span class="icon"><i class="ph ph-chart-bar"></i></span>
-                        <span class="text">Analytics</span>
                     </a>
                 </li>
                 <li class="sidebar-menu__item">
