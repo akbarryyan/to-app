@@ -406,7 +406,7 @@
     </div>
 
     <!-- Modal Tambah Kategori -->
-    {{-- <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -414,7 +414,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form id="addCategoryForm">
+                    <form id="addCategoryForm" method="POST">
                         @csrf
                         <div class="mb-3">
                             <label for="name" class="form-label">Name</label>
@@ -441,10 +441,10 @@
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 
     <!-- Modal Edit Kategori -->
-    {{-- <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -454,7 +454,6 @@
                 <div class="modal-body">
                     <form id="editCategoryForm">
                         @csrf
-                        @method('PUT')
                         <input type="hidden" id="editCategoryId" name="id">
                         <div class="mb-3">
                             <label for="editName" class="form-label">Name</label>
@@ -481,29 +480,7 @@
                 </div>
             </div>
         </div>
-    </div> --}}
-
-    <!-- Modal Konfirmasi Hapus Kategori -->
-    <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteCategoryModalLabel">Delete Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p>Are you sure you want to delete this category?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger" id="deleteCategoryButton">Delete</button>
-                </div>
-            </div>
-        </div>
     </div>
-
-
-
 
     <script>
         toastr.options = {
@@ -924,6 +901,193 @@
         // Fungsi untuk memperbarui data tabel jika diperlukan
         console.log("Table updated");
     }
+    </script>
+
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        // Fungsi untuk menampilkan modal tambah kategori
+        function showAddCategoryModal() {
+            $('#addCategoryModal').modal('show');
+        }
+
+        // Fungsi untuk menampilkan modal edit kategori
+        function editCategory(categoryId, categoryName, categoryDescription, categoryDuration, tryoutId) {
+            $('#editCategoryId').val(categoryId);
+            $('#editName').val(categoryName);
+            $('#editDescription').val(categoryDescription);
+            $('#editDuration').val(categoryDuration);
+            $('#editTryoutId').val(tryoutId);
+            $('#editCategoryModal').modal('show');
+        }
+
+        // Fungsi untuk konfirmasi hapus kategori
+        function confirmDeleteCategory(categoryId) {
+            if (confirm('Apakah Anda yakin ingin menghapus kategori ini?')) {
+                $.ajax({
+                    url: `/categories/${categoryId}`,
+                    type: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(result) {
+                        toastr.success(result.message);
+                        $(`#category-row-${categoryId}`).fadeOut('slow', function() {
+                            $(this).remove();
+                        });
+                    },
+                    error: function(xhr) {
+                        toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat menghapus kategori.');
+                    }
+                });
+            }
+        }
+
+        // AJAX untuk tambah kategori
+        $(document).on('click', '#addCategoryButton', function(event) {
+            event.preventDefault(); // Mencegah form submit default
+            $('#loading').addClass('active'); // Menampilkan loading indicator
+
+            let formData = new FormData($('#addCategoryForm')[0]); // Mengambil data dari form
+
+            $.ajax({
+                url: '/admin/categories', // URL endpoint untuk tambah kategori
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // CSRF token
+                },
+                data: formData,
+                processData: false, // Tidak memproses data
+                contentType: false, // Tidak mengatur content type
+                success: function(result) {
+                    console.log('Add category success:', result); // Log hasil sukses
+                    $('#addCategoryModal').modal('hide'); // Sembunyikan modal
+                    setTimeout(function() {
+                        $('#loading').removeClass('active'); // Sembunyikan loading indicator setelah 2 detik
+                    }, 2000);
+                    toastr.success(result.message); // Tampilkan pesan sukses
+                    location.reload(); // Reload halaman untuk menampilkan data terbaru
+                },
+                error: function(xhr, status, error) {
+                    $('#loading').removeClass('active'); // Sembunyikan loading indicator
+                    console.error('Add category error:', xhr.responseText); // Log error
+                    toastr.error(xhr.responseText); // Tampilkan pesan error
+                }
+            });
+        });
+
+        // AJAX untuk edit kategori
+        $(document).on('click', '#saveChangesButtonCategory', function() {
+            event.preventDefault(); // Mencegah form submit default
+            $('#loading').addClass('active'); // Menampilkan loading indicator
+
+            let formData = new FormData($('#editCategoryForm')[0]);
+            let categoryId = $('#editCategoryId').val();
+
+            $.ajax({
+                url: `/admin/categories/${categoryId}`,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'X-HTTP-Method-Override': 'PUT'
+                },
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(result) {
+                    console.log('Edit category success:', result); // Log hasil sukses
+                    $('#editCategoryModal').modal('hide'); // Sembunyikan modal
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 8000); // Delay 8 detik
+                    toastr.success(result.message); // Tampilkan pesan sukses
+                    location.reload(); // Reload halaman untuk menampilkan data terbaru
+                },
+                error: function(xhr) {
+                    toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat memperbarui kategori.');
+                }
+            });
+        });
+
+        // Fungsi untuk pencarian
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            table = document.getElementById('categoryTable');
+            tr = table.getElementsByTagName('tr');
+
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = 'none';
+                td = tr[i].getElementsByTagName('td');
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = '';
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+
+        // Fungsi untuk mengurutkan tabel
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById('categoryTable');
+            switching = true;
+            dir = 'asc';
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName('TD')[n];
+                    y = rows[i + 1].getElementsByTagName('TD')[n];
+
+                    if (dir == 'asc') {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == 'desc') {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == 'asc') {
+                        dir = 'desc';
+                        switching = true;
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html>

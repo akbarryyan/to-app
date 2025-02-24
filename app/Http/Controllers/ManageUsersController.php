@@ -50,14 +50,14 @@ class ManageUsersController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'Pengguna berhasil dihapus!',
-                'type' => 'success', // Untuk toastr
+                'type' => 'success',
             ]);
         }
 
         return response()->json([
             'success' => false,
             'message' => 'Pengguna tidak ditemukan!',
-            'type' => 'error', // Untuk toastr
+            'type' => 'error',
         ], 404);
     }
 
