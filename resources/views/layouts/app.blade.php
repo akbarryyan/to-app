@@ -501,6 +501,113 @@
         </div>
     </div>
 
+    <!-- Modal Tambah Pertanyaan -->
+    <div class="modal fade" id="addQuestionModal" tabindex="-1" aria-labelledby="addQuestionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addQuestionModalLabel">Add Question</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addQuestionForm" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="category_id" class="form-label">Category</label>
+                            <select class="form-control" id="category_id" name="category_id" required>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="question_type" class="form-label">Question Type</label>
+                            <select class="form-control" id="question_type" name="question_type" required>
+                                <option value="text">Text</option>
+                                <option value="image">Image</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 question-text-field">
+                            <label for="question_text" class="form-label">Question Text</label>
+                            <textarea class="form-control" id="question_text" name="question_text"></textarea>
+                        </div>
+                        <div class="mb-3 question-image-field d-none">
+                            <label for="question_image" class="form-label">Question Image</label>
+                            <input type="file" class="form-control" id="question_image" name="question_image">
+                        </div>
+                        <div class="mb-3">
+                            <label for="option_a" class="form-label">Option A</label>
+                            <input type="text" class="form-control" id="option_a" name="option_a" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="option_b" class="form-label">Option B</label>
+                            <input type="text" class="form-control" id="option_b" name="option_b" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="option_c" class="form-label">Option C</label>
+                            <input type="text" class="form-control" id="option_c" name="option_c" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="option_d" class="form-label">Option D</label>
+                            <input type="text" class="form-control" id="option_d" name="option_d" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="correct_answer" class="form-label">Correct Answer</label>
+                            <select class="form-control" id="correct_answer" name="correct_answer" required>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="addQuestionButton">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Tampilkan modal tambah pertanyaan
+    function showAddQuestionModal() {
+        $('#addQuestionModal').modal('show');
+    }
+
+    // Atur tampilan berdasarkan tipe pertanyaan
+    $('#question_type').on('change', function() {
+        if (this.value === 'text') {
+            $('.question-text-field').removeClass('d-none');
+            $('.question-image-field').addClass('d-none');
+        } else {
+            $('.question-text-field').addClass('d-none');
+            $('.question-image-field').removeClass('d-none');
+        }
+    });
+
+    // Kirim data formulir tambah pertanyaan
+    $(document).on('click', '#addQuestionButton', function(event) {
+        event.preventDefault();
+        let formData = new FormData($('#addQuestionForm')[0]);
+
+        $.ajax({
+            url: '{{ route("admin.questions.store") }}',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(result) {
+                $('#addQuestionModal').modal('hide');
+                toastr.success(result.message);
+                // Lakukan sesuatu setelah berhasil menambah pertanyaan, misalnya memuat ulang daftar pertanyaan
+            },
+            error: function(xhr) {
+                toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat menambah pertanyaan.');
+            }
+        });
+    });
+
+    </script>
                 
     <script>
         toastr.options = {

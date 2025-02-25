@@ -33,4 +33,5 @@ Route::prefix('admin')->group(function () {
     Route::put('/categories/{id}', [CategoriesController::class, 'updateCategory'])->name('admin.categories.update');
     Route::delete('/categories/{id}', [CategoriesController::class, 'deleteCategory'])->name('admin.categories.delete');
     Route::get('/manage-questions', [QuestionsController::class, 'loadManageQuestions'])->name('admin.questions.index');
+    Route::post('/questions', [QuestionsController::class, 'store'])->name('admin.questions.store');
 });
