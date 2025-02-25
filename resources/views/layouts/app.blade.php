@@ -482,6 +482,26 @@
         </div>
     </div>
 
+    <!-- Modal Konfirmasi Hapus Kategori -->
+    <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteCategoryModalLabel">Delete Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this category?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="deleteCategoryButton">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                
     <script>
         toastr.options = {
             "closeButton": true,
@@ -921,10 +941,18 @@
             "hideMethod": "fadeOut"
         };
 
+        let categoryIdToDelete;
+
         // Fungsi untuk menampilkan modal tambah kategori
         function showAddCategoryModal() {
             $('#addCategoryModal').modal('show');
         }
+
+        function confirmDeleteCategory(categoryId) {
+            categoryIdToDelete = categoryId;
+            $('#deleteCategoryModal').modal('show');
+        }
+
 
         // Fungsi untuk menampilkan modal edit kategori
         function editCategory(categoryId, categoryName, categoryDescription, categoryDuration, tryoutId) {
@@ -934,28 +962,6 @@
             $('#editDuration').val(categoryDuration);
             $('#editTryoutId').val(tryoutId);
             $('#editCategoryModal').modal('show');
-        }
-
-        // Fungsi untuk konfirmasi hapus kategori
-        function confirmDeleteCategory(categoryId) {
-            if (confirm('Apakah Anda yakin ingin menghapus kategori ini?')) {
-                $.ajax({
-                    url: `/categories/${categoryId}`,
-                    type: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(result) {
-                        toastr.success(result.message);
-                        $(`#category-row-${categoryId}`).fadeOut('slow', function() {
-                            $(this).remove();
-                        });
-                    },
-                    error: function(xhr) {
-                        toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat menghapus kategori.');
-                    }
-                });
-            }
         }
 
         // AJAX untuk tambah kategori
@@ -1020,6 +1026,40 @@
                 },
                 error: function(xhr) {
                     toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat memperbarui kategori.');
+                }
+            });
+        });
+
+        // AJAX untuk hapus kategori
+        $(document).on('click', '.delete-category-button', function(event) {
+            categoryIdToDelete = $(this).data('id');
+            $('#deleteCategoryModal').modal('show');
+        });
+
+        $(document).on('click', '#deleteCategoryButton', function(event) {
+            event.preventDefault();
+            $('#loading').addClass('active');
+            $.ajax({
+                url: `/admin/categories/${categoryIdToDelete}`,
+                type: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(result) {
+                    console.log('Delete category success:', result);
+                    $('#deleteCategoryModal').modal('hide');
+                    $(`#category-row-${categoryIdToDelete}`).fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    toastr.success(result.message);
+                },
+                error: function(xhr, status, error) {
+                    $('#loading').removeClass('active');
+                    console.error('Delete category error:', xhr.responseText);
+                    toastr.error(xhr.responseText || 'Terjadi kesalahan saat menghapus kategori.');
                 }
             });
         });
