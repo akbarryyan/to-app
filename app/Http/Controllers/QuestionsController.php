@@ -37,6 +37,8 @@ class QuestionsController extends Controller
             'correct_answer' => 'required|in:A,B,C,D',
         ]);
 
+        sleep(2); // Delay to show loading spinner
+        
         $question = new Questions();
         $question->category_id = $request->category_id;
         $question->question_type = $request->question_type;

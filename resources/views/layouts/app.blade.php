@@ -570,42 +570,49 @@
 
     <script>
         // Tampilkan modal tambah pertanyaan
-    function showAddQuestionModal() {
-        $('#addQuestionModal').modal('show');
-    }
-
-    // Atur tampilan berdasarkan tipe pertanyaan
-    $('#question_type').on('change', function() {
-        if (this.value === 'text') {
-            $('.question-text-field').removeClass('d-none');
-            $('.question-image-field').addClass('d-none');
-        } else {
-            $('.question-text-field').addClass('d-none');
-            $('.question-image-field').removeClass('d-none');
+        function showAddQuestionModal() {
+            $('#addQuestionModal').modal('show');
         }
-    });
 
-    // Kirim data formulir tambah pertanyaan
-    $(document).on('click', '#addQuestionButton', function(event) {
-        event.preventDefault();
-        let formData = new FormData($('#addQuestionForm')[0]);
-
-        $.ajax({
-            url: '{{ route("admin.questions.store") }}',
-            type: 'POST',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(result) {
-                $('#addQuestionModal').modal('hide');
-                toastr.success(result.message);
-                // Lakukan sesuatu setelah berhasil menambah pertanyaan, misalnya memuat ulang daftar pertanyaan
-            },
-            error: function(xhr) {
-                toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat menambah pertanyaan.');
+        // Atur tampilan berdasarkan tipe pertanyaan
+        $('#question_type').on('change', function() {
+            if (this.value === 'text') {
+                $('.question-text-field').removeClass('d-none');
+                $('.question-image-field').addClass('d-none');
+            } else {
+                $('.question-text-field').addClass('d-none');
+                $('.question-image-field').removeClass('d-none');
             }
         });
-    });
+
+        // Kirim data formulir tambah pertanyaan
+        $(document).on('click', '#addQuestionButton', function(event) {
+            event.preventDefault();
+            $('#loading').addClass('active');
+            let formData = new FormData($('#addQuestionForm')[0]);
+
+            $.ajax({
+                url: '{{ route("admin.questions.store") }}',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(result) {
+                    console.log('Add question success:', result);
+                    $('#addQuestionModal').modal('hide');
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    toastr.success(result.message);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    $('#loading').removeClass('active');
+                    console.error('Delete tryout error:', xhr.responseText);
+                    toastr.error(xhr.responseText);
+                }
+            });
+        });
 
     </script>
                 
