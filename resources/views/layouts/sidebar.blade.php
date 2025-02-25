@@ -60,7 +60,7 @@
                     </a>
                 </li>
                 <li class="sidebar-menu__item">
-                    <a href="library.html" class="sidebar-menu__link">
+                    <a href="{{ route('admin.questions.index') }}" class="sidebar-menu__link">
                         <span class="icon"><i class="ph ph-books"></i></span>
                         <span class="text">Questions / Soal</span>
                     </a>

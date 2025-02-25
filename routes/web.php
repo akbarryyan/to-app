@@ -1,11 +1,12 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TryoutController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\QuestionsController;
+use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ManageUsersController;
 use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\TryoutController;
-use App\Http\Controllers\CategoriesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,4 +32,5 @@ Route::prefix('admin')->group(function () {
     Route::post('/categories', [CategoriesController::class, 'addCategory'])->name('admin.categories.store');
     Route::put('/categories/{id}', [CategoriesController::class, 'updateCategory'])->name('admin.categories.update');
     Route::delete('/categories/{id}', [CategoriesController::class, 'deleteCategory'])->name('admin.categories.delete');
+    Route::get('/manage-questions', [QuestionsController::class, 'loadManageQuestions'])->name('admin.questions.index');
 });
