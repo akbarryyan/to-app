@@ -1318,33 +1318,32 @@
             });
         });
 
-        // AJAX untuk edit kategori
         // Kirim data formulir edit kategori
-$(document).on('click', '#saveChangesButtonCategory', function(event) {
-    event.preventDefault();
-    let categoryId = $('#editCategoryId').val();
-    let formData = $('#editCategoryForm').serialize();
+        $(document).on('click', '#saveChangesButtonCategory', function(event) {
+            event.preventDefault();
+            let categoryId = $('#editCategoryId').val();
+            let formData = $('#editCategoryForm').serialize();
 
-    $('#loading').addClass('active');
-    $.ajax({
-        url: `/admin/categories/${categoryId}`,
-        type: 'PUT',
-        data: formData,
-        success: function(result) {
-            $('#editCategoryModal').modal('hide');
-            toastr.success(result.message);
-            // Lakukan sesuatu setelah berhasil memperbarui kategori, misalnya memuat ulang daftar kategori
-            setTimeout(function() {
-                $('#loading').removeClass('active');
-            }, 2000); // Delay 2 detik
-            location.reload();
-        },
-        error: function(xhr) {
-            $('#loading').removeClass('active');
-            toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat memperbarui kategori.');
-        }
-    });
-});
+            $('#loading').addClass('active');
+            $.ajax({
+                url: `/admin/categories/${categoryId}`,
+                type: 'PUT',
+                data: formData,
+                success: function(result) {
+                    $('#editCategoryModal').modal('hide');
+                    toastr.success(result.message);
+                    // Lakukan sesuatu setelah berhasil memperbarui kategori, misalnya memuat ulang daftar kategori
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    location.reload();
+                },
+                error: function(xhr) {
+                    $('#loading').removeClass('active');
+                    toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat memperbarui kategori.');
+                }
+            });
+        });
 
 
         // AJAX untuk hapus kategori
