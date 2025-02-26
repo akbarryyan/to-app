@@ -115,4 +115,24 @@ class QuestionsController extends Controller
             'type' => 'error',
         ], 404);
     }
+
+    public function deleteQuestion($id)
+    {
+        $question = Questions::find($id);
+        if ($question) {
+            $question->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Question berhasil dihapus!',
+                'type' => 'success',
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Question tidak ditemukan!',
+            'type' => 'error',
+        ], 404);
+    }
 }

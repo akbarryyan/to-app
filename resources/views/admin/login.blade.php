@@ -53,7 +53,7 @@
         <div class="auth-right py-40 px-24 flex-center flex-column">
             <div class="auth-right__inner mx-auto w-100">
                 <a href="index.html" class="auth-right__logo">
-                    <img src="{{ asset('logo.jpg') }}" width="120" alt="">
+                    <img src="{{ asset('logo_2.png') }}" width="200" alt="">
                 </a>
                 <h2 class="mb-8">Welcome to Back! &#128075;</h2>
                 <p class="text-gray-600 text-15 mb-32">Please sign in to your admin account</p>

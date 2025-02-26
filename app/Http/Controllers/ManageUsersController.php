@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Tryout;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ManageUsersController extends Controller
@@ -10,13 +12,15 @@ class ManageUsersController extends Controller
     public function loadManageUsers(Request $request)
     {
         $users = User::all();
+        $tryouts = Tryout::all();
+        $categories = Category::all();
 
         if ($request->ajax()) {
-            $html = view('admin.partials.manage-users', compact('users'))->render();
+            $html = view('admin.partials.manage-users', compact('users', 'tryouts', 'categories'))->render();
             return response()->json(['html' => $html], 200);
         }
 
-        return view('admin.manage-users', compact('users'));
+        return view('admin.manage-users', compact('users','tryouts', 'categories'));
     }
 
     public function updateUser(Request $request, $id)

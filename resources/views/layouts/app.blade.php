@@ -635,9 +635,48 @@
         </div>
     </div>
 
+    <!-- Modal Hapus Pertanyaan -->
+    <!-- Modal Konfirmasi Hapus Pertanyaan -->
+<div class="modal fade" id="deleteQuestionModal" tabindex="-1" aria-labelledby="deleteQuestionModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteQuestionModalLabel">Delete Question</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this question?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="deleteQuestionButton">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
     <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        
         // Tampilkan modal tambah pertanyaan
         function showAddQuestionModal() {
             $('#addQuestionModal').modal('show');
@@ -746,6 +785,41 @@
                 }
             });
         });
+
+        let questionIdToDelete;
+
+$(document).on('click', '.delete-question-button', function(event) {
+    questionIdToDelete = $(this).data('id');
+    $('#deleteQuestionModal').modal('show');
+});
+
+$(document).on('click', '#deleteQuestionButton', function(event) {
+    event.preventDefault();
+    $('#loading').addClass('active');
+    $.ajax({
+        url: `/admin/questions/${questionIdToDelete}`,
+        type: 'DELETE',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function(result) {
+            console.log('Delete question success:', result);
+            $('#deleteQuestionModal').modal('hide');
+            $(`#question-row-${questionIdToDelete}`).fadeOut('slow', function() {
+                $(this).remove();
+            });
+            setTimeout(function() {
+                $('#loading').removeClass('active');
+            }, 2000); // Delay 2 detik
+            toastr.success(result.message);
+        },
+        error: function(xhr, status, error) {
+            $('#loading').removeClass('active');
+            console.error('Delete question error:', xhr.responseText);
+            toastr.error(xhr.responseText || 'Terjadi kesalahan saat menghapus pertanyaan.');
+        }
+    });
+});
 
 
     </script>

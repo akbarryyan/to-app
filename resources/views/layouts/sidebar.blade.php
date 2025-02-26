@@ -16,7 +16,7 @@
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="sidebar-menu__item has-dropdown">
+                {{-- <li class="sidebar-menu__item has-dropdown">
                     <a href="javascript:void(0)" class="sidebar-menu__link">
                         <span class="icon"><i class="ph ph-graduation-cap"></i></span>
                         <span class="text">Courses</span>
@@ -40,7 +40,7 @@
                         <span class="icon"><i class="ph ph-users-three"></i></span>
                         <span class="text">Students</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="sidebar-menu__item">
                     <a href="{{ route('admin.manage-users') }}" class="sidebar-menu__link">
                         <span class="icon"><i class="ph ph-users-three"></i></span>
