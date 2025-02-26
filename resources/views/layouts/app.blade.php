@@ -567,6 +567,75 @@
         </div>
     </div>
 
+    <!-- Modal Edit Pertanyaan -->
+    <div class="modal fade" id="editQuestionModal" tabindex="-1" aria-labelledby="editQuestionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editQuestionModalLabel">Edit Question</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editQuestionForm" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" id="editQuestionId" name="id">
+                        <div class="mb-3">
+                            <label for="editCategoryId" class="form-label">Category</label>
+                            <select class="form-control" id="editCategoryId" name="category_id" required>
+                                @foreach($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editQuestionType" class="form-label">Question Type</label>
+                            <select class="form-control" id="editQuestionType" name="question_type" required>
+                                <option value="text">Text</option>
+                                <option value="image">Image</option>
+                            </select>
+                        </div>
+                        <div class="mb-3 edit-question-text-field">
+                            <label for="editQuestionText" class="form-label">Question Text</label>
+                            <textarea class="form-control" id="editQuestionText" name="question_text"></textarea>
+                        </div>
+                        <div class="mb-3 edit-question-image-field d-none">
+                            <label for="editQuestionImage" class="form-label">Question Image</label>
+                            <input type="file" class="form-control" id="editQuestionImage" name="question_image">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editOptionA" class="form-label">Option A</label>
+                            <input type="text" class="form-control" id="editOptionA" name="option_a" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editOptionB" class="form-label">Option B</label>
+                            <input type="text" class="form-control" id="editOptionB" name="option_b" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editOptionC" class="form-label">Option C</label>
+                            <input type="text" class="form-control" id="editOptionC" name="option_c" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editOptionD" class="form-label">Option D</label>
+                            <input type="text" class="form-control" id="editOptionD" name="option_d" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editCorrectAnswer" class="form-label">Correct Answer</label>
+                            <select class="form-control" id="editCorrectAnswer" name="correct_answer" required>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D">D</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="saveChangesButtonQuestion">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
     <script>
         // Tampilkan modal tambah pertanyaan
@@ -613,6 +682,71 @@
                 }
             });
         });
+
+        // Tampilkan modal edit pertanyaan
+        function editQuestion(id, category_id, question_type, question_text, question_image, option_a, option_b, option_c, option_d, correct_answer) {
+            $('#editQuestionId').val(id);
+            $('#editCategoryId').val(category_id);
+            $('#editQuestionType').val(question_type);
+            if (question_type === 'text') {
+                $('.edit-question-text-field').removeClass('d-none');
+                $('.edit-question-image-field').addClass('d-none');
+                $('#editQuestionText').val(question_text);
+            } else {
+                $('.edit-question-text-field').addClass('d-none');
+                $('.edit-question-image-field').removeClass('d-none');
+                // Tampilkan gambar jika diperlukan
+                // $('#editQuestionImage').val(question_image);
+            }
+            $('#editOptionA').val(option_a);
+            $('#editOptionB').val(option_b);
+            $('#editOptionC').val(option_c);
+            $('#editOptionD').val(option_d);
+            $('#editCorrectAnswer').val(correct_answer);
+            $('#editQuestionModal').modal('show');
+        }
+
+
+        // Atur tampilan berdasarkan tipe pertanyaan
+        $('#editQuestionType').on('change', function() {
+            if (this.value === 'text') {
+                $('.edit-question-text-field').removeClass('d-none');
+                $('.edit-question-image-field').addClass('d-none');
+            } else {
+                $('.edit-question-text-field').addClass('d-none');
+                $('.edit-question-image-field').removeClass('d-none');
+            }
+        });
+
+        // Kirim data formulir edit pertanyaan
+        $(document).on('click', '#saveChangesButtonQuestion', function(event) {
+            event.preventDefault();
+            $('#loading').addClass('active');
+            let questionId = $('#editQuestionId').val();
+            let formData = new FormData($('#editQuestionForm')[0]);
+
+            $('#loading').addClass('active');
+            $.ajax({
+                url: `/admin/questions/${questionId}`,
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(result) {
+                    $('#editQuestionModal').modal('hide');
+                    toastr.success(result.message);
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    location.reload();
+                },
+                error: function(xhr) {
+                    $('#loading').removeClass('active');
+                    toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat memperbarui pertanyaan.');
+                }
+            });
+        });
+
 
     </script>
                 
@@ -712,10 +846,10 @@
                 success: function(result) {
                     console.log('Update tryout success:', result);
                     $('#editTryoutModal').modal('hide');
+                    toastr.success(result.message);
                     setTimeout(function() {
                         $('#loading').removeClass('active');
                     }, 2000); // Delay 2 detik
-                    toastr.success(result.message);
                     location.reload();
                 },
                 error: function(xhr, status, error) {

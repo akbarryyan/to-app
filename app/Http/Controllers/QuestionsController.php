@@ -92,6 +92,8 @@ class QuestionsController extends Controller
                     $question->question_text = null;
                 }
             }
+            sleep(2); // Delay to show loading spinner
+
             $question->option_a = $request->input('option_a');
             $question->option_b = $request->input('option_b');
             $question->option_c = $request->input('option_c');

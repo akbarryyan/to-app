@@ -35,19 +35,21 @@
                 <table id="questionTable" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th class="h6 text-gray-300" onclick="sortTable(0)">Question <i class="fas fa-sort cursor-pointer"></i></th>
-                            <th class="h6 text-gray-300" onclick="sortTable(1)">Type <i class="fas fa-sort cursor-pointer"></i></th>
-                            <th class="h6 text-gray-300" onclick="sortTable(2)">Option A <i class="fas fa-sort cursor-pointer"></i></th>
-                            <th class="h6 text-gray-300" onclick="sortTable(3)">Option B <i class="fas fa-sort cursor-pointer"></i></th>
-                            <th class="h6 text-gray-300" onclick="sortTable(4)">Option C <i class="fas fa-sort cursor-pointer"></i></th>
-                            <th class="h6 text-gray-300" onclick="sortTable(5)">Option D <i class="fas fa-sort cursor-pointer"></i></th>
-                            <th class="h6 text-gray-300" onclick="sortTable(6)">Correct Answer <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(0)">Category <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(1)">Question <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(2)">Type <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(3)">Option A <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(4)">Option B <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(5)">Option C <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(6)">Option D <i class="fas fa-sort cursor-pointer"></i></th>
+                            <th class="h6 text-gray-300" onclick="sortTable(7)">Correct Answer <i class="fas fa-sort cursor-pointer"></i></th>
                             <th class="h6 text-gray-300">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($questions as $question)
                         <tr id="question-row-{{ $question->id }}">
+                            <td class="h6 mb-0 fw-medium text-gray-300">{{ $question->category_id }}</td>
                             <td class="h6 mb-0 fw-medium text-gray-300">
                                 @if($question->question_type == 'text')
                                     {{ $question->question_text }}
