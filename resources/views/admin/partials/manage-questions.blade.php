@@ -66,7 +66,7 @@
                             <td>
                                 <div class="d-flex align-items-center gap-8">
                                     <button class="delete-question-button bg-main-50 text-danger-600 py-3 px-14 rounded hover-bg-danger-600 hover-text-white" data-id="{{ $question->id }}"><i class="fas fa-trash"></i></button>
-                                    <button class="bg-primary-100 text-success py-3 px-14 rounded hover-bg-success-600 hover-text-white" onclick="editQuestion('{{ $question->id }}', '{{ $question->question_type }}', '{{ $question->question_text }}', '{{ $question->question_image }}', '{{ $question->option_a }}', '{{ $question->option_b }}', '{{ $question->option_c }}', '{{ $question->option_d }}', '{{ $question->correct_answer }}', '{{ $question->category_id }}')"><i class="fas fa-edit"></i></button>
+                                    <button class="bg-primary-100 text-success py-3 px-14 rounded hover-bg-success-600 hover-text-white" onclick="editQuestion('{{ $question->id }}', '{{ $question->category_id }}', '{{ $question->question_type }}', '{{ $question->question_text }}', '{{ $question->question_image }}', '{{ $question->option_a }}', '{{ $question->option_b }}', '{{ $question->option_c }}', '{{ $question->option_d }}', '{{ $question->correct_answer }}')"><i class="fas fa-edit"></i></button>
                                 </div>
                             </td>
                         </tr>

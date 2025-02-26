@@ -444,43 +444,45 @@
     </div>
 
     <!-- Modal Edit Kategori -->
-    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editCategoryForm">
-                        @csrf
-                        <input type="hidden" id="editCategoryId" name="id">
-                        <div class="mb-3">
-                            <label for="editName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="editName" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="editDescription" name="description"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDuration" class="form-label">Duration (in minutes)</label>
-                            <input type="number" class="form-control" id="editDuration" name="duration" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editTryoutId" class="form-label">Tryout</label>
-                            <select class="form-control" id="editTryoutId" name="tryout_id" required>
-                                @foreach($tryouts as $tryout)
-                                    <option value="{{ $tryout->id }}">{{ $tryout->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <button type="button" class="btn btn-primary" id="saveChangesButtonCategory">Save Changes</button>
-                    </form>
-                </div>
+<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editCategoryForm">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="editCategoryId" name="id">
+                    <div class="mb-3">
+                        <label for="editName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="editName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDescription" class="form-label">Description</label>
+                        <textarea class="form-control" id="editDescription" name="description"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editDuration" class="form-label">Duration (in minutes)</label>
+                        <input type="number" class="form-control" id="editDuration" name="duration" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editTryoutId" class="form-label">Tryout</label>
+                        <select class="form-control" id="editTryoutId" name="tryout_id" required>
+                            @foreach($tryouts as $tryout)
+                                <option value="{{ $tryout->id }}">{{ $tryout->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="saveChangesButtonCategory">Save Changes</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- Modal Konfirmasi Hapus Kategori -->
     <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
@@ -635,28 +637,24 @@
         </div>
     </div>
 
-    <!-- Modal Hapus Pertanyaan -->
     <!-- Modal Konfirmasi Hapus Pertanyaan -->
-<div class="modal fade" id="deleteQuestionModal" tabindex="-1" aria-labelledby="deleteQuestionModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteQuestionModalLabel">Delete Question</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this question?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-danger" id="deleteQuestionButton">Delete</button>
+    <div class="modal fade" id="deleteQuestionModal" tabindex="-1" aria-labelledby="deleteQuestionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteQuestionModalLabel">Delete Question</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this question?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="deleteQuestionButton">Delete</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-
-
 
     <script>
         toastr.options = {
@@ -722,11 +720,18 @@
             });
         });
 
-        // Tampilkan modal edit pertanyaan
         function editQuestion(id, category_id, question_type, question_text, question_image, option_a, option_b, option_c, option_d, correct_answer) {
             $('#editQuestionId').val(id);
             $('#editCategoryId').val(category_id);
-            $('#editQuestionType').val(question_type);
+            $('#editQuestionType').val(question_type).change();
+            $('#editQuestionText').val(question_text);
+            $('#editOptionA').val(option_a);
+            $('#editOptionB').val(option_b);
+            $('#editOptionC').val(option_c);
+            $('#editOptionD').val(option_d);
+            $('#editCorrectAnswer').val(correct_answer);
+
+            // Tampilkan atau sembunyikan input berdasarkan tipe pertanyaan
             if (question_type === 'text') {
                 $('.edit-question-text-field').removeClass('d-none');
                 $('.edit-question-image-field').addClass('d-none');
@@ -737,16 +742,11 @@
                 // Tampilkan gambar jika diperlukan
                 // $('#editQuestionImage').val(question_image);
             }
-            $('#editOptionA').val(option_a);
-            $('#editOptionB').val(option_b);
-            $('#editOptionC').val(option_c);
-            $('#editOptionD').val(option_d);
-            $('#editCorrectAnswer').val(correct_answer);
+
             $('#editQuestionModal').modal('show');
         }
 
-
-        // Atur tampilan berdasarkan tipe pertanyaan
+        // Atur tampilan berdasarkan tipe pertanyaan ketika tipe diubah
         $('#editQuestionType').on('change', function() {
             if (this.value === 'text') {
                 $('.edit-question-text-field').removeClass('d-none');
@@ -788,40 +788,38 @@
 
         let questionIdToDelete;
 
-$(document).on('click', '.delete-question-button', function(event) {
-    questionIdToDelete = $(this).data('id');
-    $('#deleteQuestionModal').modal('show');
-});
-
-$(document).on('click', '#deleteQuestionButton', function(event) {
-    event.preventDefault();
-    $('#loading').addClass('active');
-    $.ajax({
-        url: `/admin/questions/${questionIdToDelete}`,
-        type: 'DELETE',
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        success: function(result) {
-            console.log('Delete question success:', result);
-            $('#deleteQuestionModal').modal('hide');
-            $(`#question-row-${questionIdToDelete}`).fadeOut('slow', function() {
-                $(this).remove();
-            });
-            setTimeout(function() {
-                $('#loading').removeClass('active');
-            }, 2000); // Delay 2 detik
-            toastr.success(result.message);
-        },
-        error: function(xhr, status, error) {
-            $('#loading').removeClass('active');
-            console.error('Delete question error:', xhr.responseText);
-            toastr.error(xhr.responseText || 'Terjadi kesalahan saat menghapus pertanyaan.');
-        }
+    $(document).on('click', '.delete-question-button', function(event) {
+        questionIdToDelete = $(this).data('id');
+        $('#deleteQuestionModal').modal('show');
     });
-});
 
-
+    $(document).on('click', '#deleteQuestionButton', function(event) {
+        event.preventDefault();
+        $('#loading').addClass('active');
+        $.ajax({
+            url: `/admin/questions/${questionIdToDelete}`,
+            type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                console.log('Delete question success:', result);
+                $('#deleteQuestionModal').modal('hide');
+                $(`#question-row-${questionIdToDelete}`).fadeOut('slow', function() {
+                    $(this).remove();
+                });
+                setTimeout(function() {
+                    $('#loading').removeClass('active');
+                }, 2000); // Delay 2 detik
+                toastr.success(result.message);
+            },
+            error: function(xhr, status, error) {
+                $('#loading').removeClass('active');
+                console.error('Delete question error:', xhr.responseText);
+                toastr.error(xhr.responseText || 'Terjadi kesalahan saat menghapus pertanyaan.');
+            }
+        });
+    });
     </script>
                 
     <script>
@@ -1277,14 +1275,15 @@ $(document).on('click', '#deleteQuestionButton', function(event) {
 
 
         // Fungsi untuk menampilkan modal edit kategori
-        function editCategory(categoryId, categoryName, categoryDescription, categoryDuration, tryoutId) {
-            $('#editCategoryId').val(categoryId);
-            $('#editName').val(categoryName);
-            $('#editDescription').val(categoryDescription);
-            $('#editDuration').val(categoryDuration);
-            $('#editTryoutId').val(tryoutId);
+        function editCategory(id, name, description, duration, tryout_id) {
+            $('#editCategoryId').val(id);
+            $('#editName').val(name);
+            $('#editDescription').val(description);
+            $('#editDuration').val(duration);
+            $('#editTryoutId').val(tryout_id);
             $('#editCategoryModal').modal('show');
         }
+
 
         // AJAX untuk tambah kategori
         $(document).on('click', '#addCategoryButton', function(event) {
@@ -1320,37 +1319,33 @@ $(document).on('click', '#deleteQuestionButton', function(event) {
         });
 
         // AJAX untuk edit kategori
-        $(document).on('click', '#saveChangesButtonCategory', function() {
-            event.preventDefault(); // Mencegah form submit default
-            $('#loading').addClass('active'); // Menampilkan loading indicator
+        // Kirim data formulir edit kategori
+$(document).on('click', '#saveChangesButtonCategory', function(event) {
+    event.preventDefault();
+    let categoryId = $('#editCategoryId').val();
+    let formData = $('#editCategoryForm').serialize();
 
-            let formData = new FormData($('#editCategoryForm')[0]);
-            let categoryId = $('#editCategoryId').val();
+    $('#loading').addClass('active');
+    $.ajax({
+        url: `/admin/categories/${categoryId}`,
+        type: 'PUT',
+        data: formData,
+        success: function(result) {
+            $('#editCategoryModal').modal('hide');
+            toastr.success(result.message);
+            // Lakukan sesuatu setelah berhasil memperbarui kategori, misalnya memuat ulang daftar kategori
+            setTimeout(function() {
+                $('#loading').removeClass('active');
+            }, 2000); // Delay 2 detik
+            location.reload();
+        },
+        error: function(xhr) {
+            $('#loading').removeClass('active');
+            toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat memperbarui kategori.');
+        }
+    });
+});
 
-            $.ajax({
-                url: `/admin/categories/${categoryId}`,
-                type: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                    'X-HTTP-Method-Override': 'PUT'
-                },
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function(result) {
-                    console.log('Edit category success:', result); // Log hasil sukses
-                    $('#editCategoryModal').modal('hide'); // Sembunyikan modal
-                    setTimeout(function() {
-                        $('#loading').removeClass('active');
-                    }, 8000); // Delay 8 detik
-                    toastr.success(result.message); // Tampilkan pesan sukses
-                    location.reload(); // Reload halaman untuk menampilkan data terbaru
-                },
-                error: function(xhr) {
-                    toastr.error(xhr.responseJSON.message || 'Terjadi kesalahan saat memperbarui kategori.');
-                }
-            });
-        });
 
         // AJAX untuk hapus kategori
         $(document).on('click', '.delete-category-button', function(event) {
