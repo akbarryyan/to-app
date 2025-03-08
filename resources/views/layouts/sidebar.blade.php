@@ -65,42 +65,6 @@
                         <span class="text">Questions / Soal</span>
                     </a>
                 </li>
-                <li class="sidebar-menu__item">
-                    <a href="mentors.html" class="sidebar-menu__link">
-                        <span class="icon"><i class="ph ph-users"></i></span>
-                        <span class="text">Mentors</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu__item">
-                    <a href="resources.html" class="sidebar-menu__link">
-                        <span class="icon"><i class="ph ph-bookmarks"></i></span>
-                        <span class="text">Resources</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu__item">
-                    <a href="message.html" class="sidebar-menu__link">
-                        <span class="icon"><i class="ph ph-chats-teardrop"></i></span>
-                        <span class="text">Messages</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu__item">
-                    <a href="event.html" class="sidebar-menu__link">
-                        <span class="icon"><i class="ph ph-calendar-dots"></i></span>
-                        <span class="text">Events</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu__item">
-                    <a href="library.html" class="sidebar-menu__link">
-                        <span class="icon"><i class="ph ph-books"></i></span>
-                        <span class="text">Library</span>
-                    </a>
-                </li>
-                <li class="sidebar-menu__item">
-                    <a href="pricing-plan.html" class="sidebar-menu__link">
-                        <span class="icon"><i class="ph ph-coins"></i></span>
-                        <span class="text">Pricing</span>
-                    </a>
-                </li>
                 
                 <li class="sidebar-menu__item">
                     <span class="text-gray-300 text-sm px-20 pt-20 fw-semibold border-top border-gray-100 d-block text-uppercase">Settings</span>
