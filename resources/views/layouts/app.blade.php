@@ -444,45 +444,44 @@
     </div>
 
     <!-- Modal Edit Kategori -->
-<div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="editCategoryForm">
-                    @csrf
-                    @method('PUT')
-                    <input type="hidden" id="editCategoryId" name="id">
-                    <div class="mb-3">
-                        <label for="editName" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="editName" name="name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="editDescription" name="description"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editDuration" class="form-label">Duration (in minutes)</label>
-                        <input type="number" class="form-control" id="editDuration" name="duration" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="editTryoutId" class="form-label">Tryout</label>
-                        <select class="form-control" id="editTryoutId" name="tryout_id" required>
-                            @foreach($tryouts as $tryout)
-                                <option value="{{ $tryout->id }}">{{ $tryout->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-primary" id="saveChangesButtonCategory">Save Changes</button>
-                </form>
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editCategoryForm">
+                        @csrf
+                        @method('PUT')
+                        <input type="hidden" id="editCategoryId" name="id">
+                        <div class="mb-3">
+                            <label for="editName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="editName" name="name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="editDescription" name="description"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editDuration" class="form-label">Duration (in minutes)</label>
+                            <input type="number" class="form-control" id="editDuration" name="duration" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTryoutId" class="form-label">Tryout</label>
+                            <select class="form-control" id="editTryoutId" name="tryout_id" required>
+                                @foreach($tryouts as $tryout)
+                                    <option value="{{ $tryout->id }}">{{ $tryout->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="button" class="btn btn-primary" id="saveChangesButtonCategory">Save Changes</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
 
     <!-- Modal Konfirmasi Hapus Kategori -->
     <div class="modal fade" id="deleteCategoryModal" tabindex="-1" aria-labelledby="deleteCategoryModalLabel" aria-hidden="true">
@@ -651,6 +650,92 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-danger" id="deleteQuestionButton">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Pengumuman -->
+    <div class="modal fade" id="addAnnouncementModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Announcement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="addAnnouncementForm">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="title" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="title" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message</label>
+                            <textarea class="form-control" id="message" name="message" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="is_active" name="is_active" checked> Active
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="addAnnouncementButton">Add Announcement</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Edit Pengumuman -->
+    <div class="modal fade" id="editAnnouncementModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Announcement</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editAnnouncementForm">
+                    <input type="hidden" id="editAnnouncementId" name="id">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="editTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="editTitle" name="title" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editMessage" class="form-label">Message</label>
+                            <textarea class="form-control" id="editMessage" name="message" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="editIsActive" name="is_active"> Active
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="saveChangesButtonAnnouncement">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteAnnouncementModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Yakin mau hapus pengumuman ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" id="deleteAnnouncementButton">Delete</button>
                 </div>
             </div>
         </div>
@@ -1407,6 +1492,239 @@
         function sortTable(n) {
             var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
             table = document.getElementById('categoryTable');
+            switching = true;
+            dir = 'asc';
+
+            while (switching) {
+                switching = false;
+                rows = table.rows;
+
+                for (i = 1; i < (rows.length - 1); i++) {
+                    shouldSwitch = false;
+                    x = rows[i].getElementsByTagName('TD')[n];
+                    y = rows[i + 1].getElementsByTagName('TD')[n];
+
+                    if (dir == 'asc') {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == 'desc') {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == 'asc') {
+                        dir = 'desc';
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": true,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": true,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+
+        let announcementIdToDelete;
+        let announcementIdToEdit;
+
+        // Fungsi untuk menampilkan modal konfirmasi hapus
+        function confirmDelete(id) {
+            announcementIdToDelete = id;
+            $('#deleteAnnouncementModal').modal('show');
+        }
+
+        // Fungsi untuk menampilkan modal edit
+        function editAnnouncement(id, title, message, isActive) {
+            announcementIdToEdit = id;
+            $('#editAnnouncementId').val(id);
+            $('#editTitle').val(title);
+            $('#editMessage').val(message);
+            $('#editIsActive').prop('checked', isActive == 1);
+            $('#editAnnouncementModal').modal('show');
+        }
+
+        // Fungsi untuk menampilkan modal tambah pengumuman
+        function showAddAnnouncementModal() {
+            $('#addAnnouncementForm')[0].reset();
+            $('#addAnnouncementModal').modal('show');
+        }
+
+        // Fungsi untuk menghapus pengumuman
+        $(document).on('click', '#deleteAnnouncementButton', function(event) {
+            event.preventDefault();
+            $('#loading').addClass('active');
+            $.ajax({
+                url: `/admin/announcements/${announcementIdToDelete}`,
+                type: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(result) {
+                    console.log('Delete announcement success:', result);
+                    $('#deleteAnnouncementModal').modal('hide');
+                    $(`#announcement-row-${announcementIdToDelete}`).fadeOut('slow', function() {
+                        $(this).remove();
+                    });
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    toastr.success(result.message);
+                },
+                error: function(xhr, status, error) {
+                    $('#loading').removeClass('active');
+                    console.error('Delete announcement error:', xhr.responseText);
+                    toastr.error(xhr.responseText);
+                }
+            });
+        });
+
+        // Fungsi untuk menyimpan perubahan pengumuman
+        $(document).on('click', '#saveChangesButtonAnnouncement', function(event) {
+            event.preventDefault();
+            $('#loading').addClass('active');
+
+            let formData = new FormData($('#editAnnouncementForm')[0]);
+            formData.set('is_active', $('#editIsActive').is(':checked') ? 1 : 0);
+
+            $.ajax({
+                url: `/admin/announcements/${announcementIdToEdit}`,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'X-HTTP-Method-Override': 'PUT'
+                },
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(result) {
+                    console.log('Update announcement success:', result);
+                    $('#editAnnouncementModal').modal('hide');
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    toastr.success(result.message);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    $('#loading').removeClass('active');
+                    console.error('Update announcement error:', xhr.responseText);
+                    toastr.error(xhr.responseText);
+                }
+            });
+        });
+
+        // Fungsi untuk menambah pengumuman
+        $(document).on('click', '#addAnnouncementButton', function(event) {
+            event.preventDefault();
+            $('#loading').addClass('active');
+
+            let formData = new FormData($('#addAnnouncementForm')[0]);
+            formData.set('is_active', $('#is_active').is(':checked'));
+
+            $.ajax({
+                url: `/admin/announcements`,
+                type: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(result) {
+                    console.log('Add announcement success:', result);
+                    $('#addAnnouncementModal').modal('hide');
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    toastr.success(result.message);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    $('#loading').removeClass('active');
+                    console.error('Add announcement error:', xhr.responseText);
+                    toastr.error(xhr.responseText);
+                }
+            });
+        });
+
+        // Fungsi untuk toggle status pengumuman
+        function toggleAnnouncement(id) {
+            $('#loading').addClass('active');
+            $.ajax({
+                url: `/admin/announcements/${id}/toggle`,
+                type: 'PUT',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(result) {
+                    console.log('Toggle announcement success:', result);
+                    toastr.success(result.message);
+                    setTimeout(function() {
+                        $('#loading').removeClass('active');
+                    }, 2000); // Delay 2 detik
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    $('#loading').removeClass('active');
+                    console.error('Toggle announcement error:', xhr.responseText);
+                    toastr.error(xhr.responseText);
+                }
+            });
+        }
+
+        // Fungsi untuk pencarian
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            var input, filter, table, tr, td, i, j, txtValue;
+            input = document.getElementById('searchInput');
+            filter = input.value.toUpperCase();
+            table = document.getElementById('announcementTable');
+            tr = table.getElementsByTagName('tr');
+
+            for (i = 1; i < tr.length; i++) {
+                tr[i].style.display = 'none';
+                td = tr[i].getElementsByTagName('td');
+                for (j = 0; j < td.length; j++) {
+                    if (td[j]) {
+                        txtValue = td[j].textContent || td[j].innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = '';
+                            break;
+                        }
+                    }
+                }
+            }
+        });
+
+        // Fungsi untuk mengurutkan tabel
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById('announcementTable');
             switching = true;
             dir = 'asc';
 
