@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TryoutController;
+use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ManageUsersController;
-use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\AdminDashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -47,4 +49,13 @@ Route::prefix('admin')->group(function () {
     Route::put('/announcements/{id}', [AnnouncementController::class, 'updateAnnouncement'])->name('admin.announcements.update');
     Route::delete('/announcements/{id}', [AnnouncementController::class, 'deleteAnnouncement'])->name('admin.announcements.delete');
     Route::put('/announcements/{id}/toggle', [AnnouncementController::class, 'toggleAnnouncement'])->name('admin.announcements.toggle');
+});
+
+Route::prefix('user')->group(function () {
+    Route::get('/register', [UserAuthController::class, 'showRegister'])->name('user.register');
+    Route::post('/register', [UserAuthController::class, 'register']);
+    Route::get('/login', [UserAuthController::class, 'showLogin'])->name('user.login');
+    Route::post('/login', [UserAuthController::class, 'login']);
+    Route::post('/logout', [UserAuthController::class, 'logout'])->name('user.logout');
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
 });

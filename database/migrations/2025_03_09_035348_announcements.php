@@ -16,7 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('title'); // Judul pengumuman
             $table->text('message'); // Isi pesan
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade'); // Admin yang bikin
+            $table->foreignId('created_by')->constrained('admins')->onDelete('cascade'); // Admin yang bikin
             $table->boolean('is_active')->default(true); // Status aktif/tidak
             $table->timestamps();
         });
@@ -29,7 +29,7 @@ return new class extends Migration
     {
         Schema::table('announcements', function (Blueprint $table) {
             $table->dropForeign(['created_by']);
-            $table->foreign('created_by')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('created_by')->references('id')->on('admins')->onDelete('cascade');
         });
     }
 };
