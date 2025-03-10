@@ -51,7 +51,7 @@ Route::prefix('admin')->group(function () {
     Route::put('/announcements/{id}/toggle', [AnnouncementController::class, 'toggleAnnouncement'])->name('admin.announcements.toggle');
 });
 
-Route::prefix('user')->group(function () {
+Route::prefix('u')->group(function () {
     Route::get('/register', [UserAuthController::class, 'showRegister'])->name('user.register');
     Route::post('/register', [UserAuthController::class, 'register']);
     Route::get('/login', [UserAuthController::class, 'showLogin'])->name('user.login');

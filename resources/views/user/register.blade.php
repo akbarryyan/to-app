@@ -8,6 +8,8 @@
     <title>Sign Up - Tryout</title>
     <link rel="stylesheet" href="{{ asset('user/assets/css/output.css') }}" />
     <link rel="stylesheet" href="{{ asset('user/assets/css/style.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" integrity="sha512-3pIirOrwegjM6erE5gPSwkUzO+3cTjpnV9lexlNZqvupR64iZBnOOTiiLPb9M36zpMScbmUNIcHUqKD47M719g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   </head>
   <body>
     <section class="bg-white dark:bg-darkblack-500">
@@ -26,22 +28,6 @@
               <h2 class="text-bgray-900 dark:text-white text-4xl font-semibold font-poppins mb-2">Sign up for an account</h2>
               <p class="font-urbanis text-base font-medium text-bgray-600 dark:text-darkblack-300">Prepare for your future with us</p>
             </header>
-
-            <!-- Google & Apple Button (opsional, bisa dihapus kalau nggak dipake) -->
-            <div class="flex flex-col md:flex-row gap-4">
-              <a href="#" class="inline-flex justify-center items-center gap-x-2 border border-bgray-300 dark:border-darkblack-400 rounded-lg px-6 py-4 text-base text-bgray-900 dark:text-white font-medium">
-                <svg width="23" height="22" viewBox="0 0 23 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- SVG Google -->
-                </svg>
-                <span>Sign In with Google</span>
-              </a>
-              <a href="#" class="inline-flex justify-center items-center gap-x-2 border border-bgray-300 dark:border-darkblack-400 rounded-lg px-6 py-4 text-base text-bgray-900 dark:text-white font-medium">
-                <svg class="fill-bgray-900 dark:fill-white" width="21" height="22" viewBox="0 0 21 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <!-- SVG Apple -->
-                </svg>
-                <span>Sign In with Apple</span>
-              </a>
-            </div>
 
             <div class="relative mt-6 mb-5">
               <div class="absolute inset-0 flex items-center">
@@ -64,7 +50,7 @@
               <div class="mb-6 relative">
                 <input type="password" name="password" id="password" class="text-bgray-800 dark:text-white dark:bg-darkblack-500 dark:border-darkblack-400 text-base border border-bgray-300 h-14 w-full focus:border-success-300 focus:ring-0 rounded-lg px-4 py-3.5 placeholder:text-bgray-500 placeholder:text-base" placeholder="Password" required />
                 <button type="button" class="absolute top-4 right-4 bottom-4 toggle-password">
-                  <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <i class='bx bx-show text-white text-xl'></i>
                     <!-- SVG Eye -->
                   </svg>
                 </button>
@@ -72,7 +58,7 @@
               <div class="mb-6 relative">
                 <input type="password" name="password_confirmation" id="password_confirmation" class="text-bgray-800 dark:text-white dark:bg-darkblack-500 dark:border-darkblack-400 text-base border border-bgray-300 h-14 w-full focus:border-success-300 focus:ring-0 rounded-lg px-4 py-3.5 placeholder:text-bgray-500 placeholder:text-base" placeholder="Confirm Password" required />
                 <button type="button" class="absolute top-4 right-4 bottom-4 toggle-password">
-                  <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <i class='bx bx-show text-white text-xl'></i>
                     <!-- SVG Eye -->
                   </svg>
                 </button>
@@ -83,7 +69,10 @@
                   <label for="remember" class="text-bgray-600 dark:text-bgray-50 text-base">By creating an account, you agreeing to our <span class="text-bgray-900 dark:text-white">Privacy Policy</span>, and <span class="text-bgray-900 dark:text-white">Electronics Communication Policy</span>.</label>
                 </div>
               </div>
-              <button type="submit" class="py-3.5 flex items-center justify-center text-white font-bold bg-success-300 hover:bg-success-400 transition-all rounded-lg w-full">Sign Up</button>
+              <button type="submit" class="py-3.5 flex items-center justify-center text-white font-bold bg-success-300 hover:bg-success-400 transition-all rounded-lg w-full">
+                <span id="buttonText">Sign Up</span>
+                <span id="loadingSpinner" class="hidden animate-spin h-5 w-5 border-2 border-t-transparent border-white rounded-full ml-2"></span>
+              </button>
             </form>
 
             <!-- Form Bottom -->
@@ -123,33 +112,72 @@
     <!-- Scripts -->
     <script src="{{ asset('user/assets/js/jquery-3.6.0.min.js') }}"></script>
     <script src="{{ asset('user/assets/js/main.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        $('#registerForm').on('submit', function(e) {
-            e.preventDefault();
-            $.ajax({
-                url: '{{ route("user.register") }}',
-                method: 'POST',
-                data: $(this).serialize(),
-                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                success: function(response) {
-                    alert(response.message);
-                    window.location.href = '{{ route("user.login") }}';
-                },
-                error: function(xhr) {
-                    alert(xhr.responseJSON.message);
-                }
-            });
-        });
+      // Konfigurasi Toastr
+      toastr.options = {
+          closeButton: true,
+          progressBar: true,
+          positionClass: 'toast-top-right',
+          timeOut: 3000,
+      };
 
-        // Toggle password visibility (opsional, sesuain sama template)
-        $('.toggle-password').on('click', function() {
-            let input = $(this).siblings('input');
-            if (input.attr('type') === 'password') {
-                input.attr('type', 'text');
-            } else {
-                input.attr('type', 'password');
-            }
-        });
-    </script>
+      $(document).ready(function() {
+          console.log('jQuery loaded'); // Cek jQuery
+          console.log('Toastr available:', typeof toastr !== 'undefined'); // Cek Toastr
+
+          $('#registerForm').on('submit', function(e) {
+              e.preventDefault();
+              console.log('Form submitted'); // Cek submit
+
+              // Tampilkan animasi loading
+              $('#buttonText').addClass('hidden');
+              $('#loadingSpinner').removeClass('hidden');
+              $('#signupButton').prop('disabled', true);
+              console.log('Loading started'); // Cek loading
+
+              $.ajax({
+                  url: '{{ route("user.register") }}',
+                  method: 'POST',
+                  data: $(this).serialize(),
+                  headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                  success: function(response) {
+                      console.log('Success:', response); // Cek response
+                      // Sembunyikan loading
+                      $('#buttonText').removeClass('hidden');
+                      $('#loadingSpinner').addClass('hidden');
+                      $('#signupButton').prop('disabled', false);
+
+                      // Toastr sukses
+                      toastr.success(response.message);
+
+                      setTimeout(() => {
+                          window.location.href = '{{ route("user.login") }}';
+                      }, 2000); // Redirect setelah 2 detik
+                  },
+                  error: function(xhr) {
+                      console.log('Error:', xhr.responseJSON); // Cek error
+                      // Sembunyikan loading
+                      $('#buttonText').removeClass('hidden');
+                      $('#loadingSpinner').addClass('hidden');
+                      $('#signupButton').prop('disabled', false);
+
+                      // Toastr error
+                      toastr.error(xhr.responseJSON.message);
+                  }
+              });
+          });
+
+          // Toggle password visibility
+          $('.toggle-password').on('click', function() {
+              let input = $(this).siblings('input');
+              if (input.attr('type') === 'password') {
+                  input.attr('type', 'text');
+              } else {
+                  input.attr('type', 'password');
+              }
+          });
+      });
+  </script>
   </body>
 </html>
