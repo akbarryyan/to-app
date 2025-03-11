@@ -359,7 +359,7 @@
                           <!--edit-->
                           <div>
                             <img
-                              src="./assets/images/avatar/profile-xs.png"
+                              src="{{asset('user/assets/images/avatar/profile-xs.png')}}"
                               alt="profile"
                             />
                           </div>

@@ -58,4 +58,6 @@ Route::prefix('u')->group(function () {
     Route::post('/login', [UserAuthController::class, 'login']);
     Route::post('/logout', [UserAuthController::class, 'logout'])->name('user.logout');
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/profile', [UserAuthController::class, 'showProfile'])->name('user.profile');
+    Route::post('/profile', [UserAuthController::class, 'updateProfile']);
 });

@@ -40,7 +40,7 @@
               <div class="mb-6 relative">
                 <input type="password" name="password" id="password" class="text-bgray-800 dark:text-white dark:bg-darkblack-500 dark:border-darkblack-400 text-base border border-bgray-300 h-14 w-full focus:border-success-300 focus:ring-0 rounded-lg px-4 py-3.5 placeholder:text-bgray-500 placeholder:text-base" placeholder="Password" required />
                 <button type="button" class="absolute top-4 right-4 bottom-4 toggle-password">
-                  <svg width="22" height="20" viewBox="0 0 22 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <i class='bx bx-show text-white text-xl'></i>
                     <!-- SVG Eye -->
                   </svg>
                 </button>

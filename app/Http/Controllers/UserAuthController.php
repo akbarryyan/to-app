@@ -54,4 +54,33 @@ class UserAuthController extends Controller
         $request->session()->forget('user_id');
         return redirect()->route('user.login');
     }
+
+    public function showProfile(Request $request)
+    {
+        if (!$request->session()->has('user_id')) {
+            return redirect()->route('user.partials.profile');
+        }
+
+        $user = User::find($request->session()->get('user_id'));
+        return view('user.profile', compact('user'));
+    }
+
+    public function updateProfile(Request $request)
+    {
+        if (!$request->session()->has('user_id')) {
+            return response()->json(['message' => 'Harap login terlebih dahulu!'], 401);
+        }
+
+        $request->validate([
+            'sekolah_asal' => 'required|string|max:255',
+            'jurusan_tujuan' => 'required|string|max:255',
+        ]);
+
+        $user = User::find($request->session()->get('user_id'));
+        $user->sekolah_asal = $request->input('sekolah_asal');
+        $user->jurusan_tujuan = $request->input('jurusan_tujuan');
+        $user->save();
+
+        return response()->json(['message' => 'Profile berhasil diperbarui!'], 200);
+    }
 }
