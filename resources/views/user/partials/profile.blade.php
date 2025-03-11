@@ -7,7 +7,7 @@
                     <div class="tab-icon inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-bgray-100 transition-all dark:bg-darkblack-500">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <ellipse cx="12" cy="17.5" rx="7" ry="3.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
-                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="1.5 stroke-linejoin="round" />
                         </svg>
                     </div>
                     <div>
@@ -15,7 +15,6 @@
                         <p class="mt-0.5 text-sm font-medium text-bgray-700 dark:text-darkblack-300">Lengkapi data diri kamu</p>
                     </div>
                 </div>
-                <!-- Tab Logout -->
                 <div class="tab flex gap-x-4 rounded-lg p-4 transition-all">
                     <form action="{{ route('user.logout') }}" method="POST" class="w-full">
                         @csrf
@@ -44,7 +43,7 @@
                             Personal Information
                         </h3>
                         <div class="mt-8">
-                            <form id="profileForm" action="{{ route('user.profile') }}" method="POST">
+                            <form id="profileForm" action="{{ route('user.profile') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="grid grid-cols-1 gap-6 2xl:grid-cols-2">
                                     <div class="flex flex-col gap-2">
@@ -63,6 +62,18 @@
                                         <label for="jurusan_tujuan" class="text-base font-medium text-bgray-600 dark:text-bgray-50">Jurusan Tujuan</label>
                                         <input type="text" id="jurusan_tujuan" name="jurusan_tujuan" value="{{ $user->jurusan_tujuan ?? '' }}" class="h-14 rounded-lg border-0 bg-bgray-50 p-4 focus:border focus:border-success-300 focus:ring-0 dark:bg-darkblack-500 dark:text-white" placeholder="Masukkan jurusan tujuan" required />
                                     </div>
+                                    <div class="flex flex-col gap-2">
+                                        <label for="password" class="text-base font-medium text-bgray-600 dark:text-bgray-50">Password Baru (Opsional)</label>
+                                        <input type="password" id="password" name="password" class="h-14 rounded-lg border-0 bg-bgray-50 p-4 focus:border focus:border-success-300 focus:ring-0 dark:bg-darkblack-500 dark:text-white" placeholder="Masukkan password baru" />
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <label for="password_confirmation" class="text-base font-medium text-bgray-600 dark:text-bgray-50">Konfirmasi Password</label>
+                                        <input type="password" id="password_confirmation" name="password_confirmation" class="h-14 rounded-lg border-0 bg-bgray-50 p-4 focus:border focus:border-success-300 focus:ring-0 dark:bg-darkblack-500 dark:text-white" placeholder="Konfirmasi password" />
+                                    </div>
+                                    <div class="flex flex-col gap-2">
+                                        <label for="avatar" class="text-base font-medium text-bgray-600 dark:text-bgray-50">Avatar (Opsional)</label>
+                                        <input type="file" id="avatar" name="avatar" class="h-14 rounded-lg border-0 bg-bgray-50 p-4 text-bgray-600 dark:bg-darkblack-500 dark:text-white" accept="image/*" />
+                                    </div>
                                 </div>
                                 <div class="flex justify-end">
                                     <button type="submit" id="saveButton" class="mt-10 rounded-lg bg-success-300 px-4 py-3.5 font-semibold text-white flex items-center justify-center">
@@ -78,14 +89,7 @@
                             <h4 class="mb-2 text-lg font-bold text-bgray-800 dark:text-white">Update Profile</h4>
                             <p class="mb-4 text-bgray-500">Lengkapi data untuk memulai tryout.</p>
                             <div class="relative m-auto h-40 w-40 text-center">
-                                <img src="{{ asset('user/assets/images/avatar/profile.png') }}" alt="Profile" />
-                                <button class="absolute bottom-1 right-4">
-                                    <svg width="29" height="29" viewBox="0 0 29 29" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <circle cx="14.2414" cy="14.2414" r="14.2414" fill="#22C55E" />
-                                        <path d="M14.6994 10.2363C15.7798 11.3167 16.8435 12.3803 17.9171 13.454C17.7837 13.584 17.6403 13.7174 17.5036 13.8574C15.5497 15.8114 13.5924 17.7653 11.6385 19.7192C11.5118 19.8459 11.3884 19.9726 11.2617 20.0927C11.2317 20.1193 11.185 20.1427 11.145 20.1427C10.1281 20.146 9.11108 20.1427 8.0941 20.146C8.02408 20.146 8.01074 20.1193 8.01074 20.0593C8.01074 19.049 8.01074 18.0354 8.01408 17.0251C8.01408 16.9784 8.03742 16.9217 8.06743 16.8917C9.26779 15.688 10.4682 14.4876 11.6685 13.2873C12.6655 12.2903 13.6591 11.2967 14.6561 10.2997C14.6761 10.2797 14.6861 10.253 14.6994 10.2363Z" fill="white" />
-                                        <path d="M18.6467 12.7197C17.573 11.646 16.506 10.579 15.4424 9.51537C15.6324 9.31864 15.8292 9.11858 16.0259 8.91852C16.256 8.68845 16.4894 8.45838 16.7228 8.22831C17.0162 7.93822 17.4197 7.93822 17.7097 8.22831C18.4466 8.9552 19.1802 9.68542 19.9171 10.4123C20.2038 10.6957 20.2138 11.0992 19.9371 11.3859C19.5136 11.8261 19.0868 12.2629 18.6634 12.703C18.66 12.7097 18.65 12.7163 18.6467 12.7197Z" fill="white" />
-                                    </svg>
-                                </button>
+                                <img id="avatarPreview" src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('user/assets/images/avatar/profile.png') }}" alt="Profile" class="object-cover w-full h-full rounded-full" />
                             </div>
                         </header>
                     </div>
@@ -110,18 +114,35 @@
     };
 
     $(document).ready(function() {
+        // Preview avatar sebelum upload
+        $('#avatar').on('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#avatarPreview').attr('src', e.target.result);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
         $('#profileForm').on('submit', function(e) {
             e.preventDefault();
 
-            // Tampilkan animasi loading Tailwind
+            // Tampilkan animasi loading
             $('#buttonText').addClass('hidden');
             $('#loadingSpinner').removeClass('hidden');
             $('#saveButton').prop('disabled', true);
 
+            // Kirim data dengan FormData
+            let formData = new FormData(this);
+
             $.ajax({
                 url: '{{ route("user.profile") }}',
                 method: 'POST',
-                data: $(this).serialize(),
+                data: formData,
+                processData: false,
+                contentType: false,
                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 success: function(response) {
                     // Sembunyikan loading
@@ -129,8 +150,13 @@
                     $('#loadingSpinner').addClass('hidden');
                     $('#saveButton').prop('disabled', false);
 
-                    // Toastr sukses, tanpa redirect
+                    // Toastr sukses
                     toastr.success(response.message);
+
+                    // Update avatar di UI kalau ada
+                    if (response.avatar) {
+                        $('#avatarPreview').attr('src', '{{ asset("storage/") }}/' + response.avatar);
+                    }
                 },
                 error: function(xhr) {
                     // Sembunyikan loading
@@ -138,18 +164,14 @@
                     $('#loadingSpinner').addClass('hidden');
                     $('#saveButton').prop('disabled', false);
 
-                    // Toastr error
-                    toastr.error(xhr.responseJSON.message);
+                    // Toastr error dengan detail
+                    let errorMsg = xhr.responseJSON.message || 'Terjadi kesalahan';
+                    if (xhr.responseJSON.errors) {
+                        errorMsg += ': ' + Object.values(xhr.responseJSON.errors).join(', ');
+                    }
+                    toastr.error(errorMsg);
                 }
             });
-        });
-
-        // Tab switching (opsional)
-        $('.tab').on('click', function() {
-            $('.tab').removeClass('active');
-            $(this).addClass('active');
-            $('.tab-pane').removeClass('active');
-            $('#' + $(this).data('tab')).addClass('active');
         });
     });
 </script>

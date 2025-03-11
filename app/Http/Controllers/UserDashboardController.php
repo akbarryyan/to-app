@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class UserDashboardController extends Controller
 {
     public function index(Request $request)
-    {   
-        if ($request->ajax()) {
-            $html = view('user.partials.dashboard')->render();
-            return response()->json(['html' => $html], 200);
-        }
-
-        return view('user.dashboard');
+{
+    if (!$request->session()->has('user_id')) {
+        return redirect()->route('user.login');
     }
+
+    $user = User::find($request->session()->get('user_id'));
+    return view('user.dashboard', compact('user'));
+}
 }

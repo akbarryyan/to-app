@@ -252,50 +252,50 @@
           ></div>
           <!--                author-->
           <div
-            onclick="profileAction()"
-            class="flex cursor-pointer space-x-0 lg:space-x-3"
-          >
-            <div
-              class="h-[52px] w-[52px] overflow-hidden rounded-xl border border-bgray-300"
+    onclick="profileAction()"
+    class="flex cursor-pointer space-x-0 lg:space-x-3"
+>
+    <div
+        class="h-[52px] w-[52px] overflow-hidden rounded-xl border border-bgray-300 flex items-center justify-center"
+    >
+        <img
+            class="h-full w-full object-cover object-center"
+            src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('user/assets/images/avatar/profile-52x52.png') }}"
+            alt="avatar"
+        />
+    </div>
+    <div class="hidden 2xl:block">
+        <div class="flex items-center space-x-2.5">
+            <h3
+                class="text-base font-bold leading-[28px] text-bgray-900 dark:text-white"
             >
-              <img
-                class="object-cover"
-                src="{{ asset('user/assets/images/avatar/profile-52x52.png') }}"
-                alt="avater"
-              />
-            </div>
-            <div class="hidden 2xl:block">
-              <div class="flex items-center space-x-2.5">
-                <h3
-                  class="text-base font-bold leading-[28px] text-bgray-900 dark:text-white"
-                >
-                  John Doe
-                </h3>
-                <span>
-                  <svg
+                {{ $user->name }}
+            </h3>
+            <span>
+                <svg
                     class="stroke-bgray-900 dark:stroke-white"
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
-                  >
+                >
                     <path
-                      d="M7 10L12 14L17 10"
-                      stroke-width="2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
+                        d="M7 10L12 14L17 10"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
                     />
-                  </svg>
-                </span>
-              </div>
-              <p
-                class="text-sm font-medium leading-[20px] text-bgray-600 dark:text-bgray-50"
-              >
-                Super Admin
-              </p>
-            </div>
-          </div>
+                </svg>
+            </span>
+        </div>
+        <p
+            class="text-sm font-medium leading-[20px] text-bgray-600 dark:text-bgray-50"
+        >
+            {{ $user->email }}
+        </p>
+    </div>
+</div>
         </div>
         <!--                notification ,message, store-->
         <div class="notification-popup-wrapper">
