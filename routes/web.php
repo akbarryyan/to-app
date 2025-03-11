@@ -6,6 +6,7 @@ use App\Http\Controllers\UserAuthController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\QuestionsController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\UserTryoutController;
 use App\Http\Controllers\ManageUsersController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\UserDashboardController;
@@ -60,4 +61,6 @@ Route::prefix('u')->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     Route::get('/profile', [UserAuthController::class, 'showProfile'])->name('user.profile');
     Route::post('/profile', [UserAuthController::class, 'updateProfile']);
+    Route::get('/tryout', [UserTryoutController::class, 'index'])->name('tryout.index');
+    Route::post('/tryout/{tryout_id}/register', [UserTryoutController::class, 'register'])->name('tryout.register');
 });

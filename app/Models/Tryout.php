@@ -17,4 +17,11 @@ class Tryout extends Model
         'start_date',
         'end_date',
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'tryout_user')
+                    ->withPivot('registered_at', 'status')
+                    ->withTimestamps();
+    }
 }

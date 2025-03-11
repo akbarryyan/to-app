@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'name', 'email', 'password', 'sekolah_asal', 'jurusan_tujuan',
+        'name', 'email', 'password', 'sekolah_asal', 'jurusan_tujuan', 'avatar',
     ];
 
     /**
@@ -42,5 +42,12 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function tryouts()
+    {
+        return $this->belongsToMany(Tryout::class, 'tryout_user')
+                    ->withPivot('registered_at', 'status')
+                    ->withTimestamps();
     }
 }
